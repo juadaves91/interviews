@@ -1,0 +1,1611 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Databricks de Cero a Entrevista</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una columna de lectura de ~70ch, con diagramas a sangre completa y tarjetas de concepto intercaladas */
+:root{
+  --bg:#f7f6f4;
+  --surface:#ffffff;
+  --surface-2:#efeeea;
+  --fg:#1b1a19;
+  --fg-dim:#5c5853;
+  --line:#dcd9d2;
+  --ember:#c4452a;
+  --ember-soft:#f6e6e1;
+  --teal:#1d6b68;
+  --teal-soft:#e0efee;
+  --amber:#9a6b1a;
+  --diag-bg:#ffffff;
+  --diag-stroke:#45413c;
+  --diag-fill:#f2f0ec;
+  --diag-text:#1b1a19;
+  --code-bg:#1f1e1c;
+  --code-fg:#ece9e3;
+  --font-display:"Space Grotesk","Trebuchet MS",sans-serif;
+  --font-body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15161a;
+    --surface:#1d1f24;
+    --surface-2:#24262c;
+    --fg:#eceaf0;
+    --fg-dim:#a3a0ab;
+    --line:#32343b;
+    --ember:#ff8a6b;
+    --ember-soft:#3a241e;
+    --teal:#5fcfc6;
+    --teal-soft:#15302f;
+    --amber:#e0ab54;
+    --diag-bg:#1d1f24;
+    --diag-stroke:#8d8a96;
+    --diag-fill:#272a31;
+    --diag-text:#eceaf0;
+    --code-bg:#0f1013;
+    --code-fg:#e3e0e8;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15161a; --surface:#1d1f24; --surface-2:#24262c; --fg:#eceaf0; --fg-dim:#a3a0ab;
+  --line:#32343b; --ember:#ff8a6b; --ember-soft:#3a241e; --teal:#5fcfc6; --teal-soft:#15302f;
+  --amber:#e0ab54; --diag-bg:#1d1f24; --diag-stroke:#8d8a96; --diag-fill:#272a31; --diag-text:#eceaf0;
+  --code-bg:#0f1013; --code-fg:#e3e0e8; color-scheme:dark;
+}
+
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 72px}
+
+/* ---- cabecera ---- */
+header.hero{padding-block:48px 28px;border-bottom:3px solid var(--fg)}
+.kicker{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);margin:0 0 14px}
+h1{font-family:var(--font-display);font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.02;margin:0 0 16px;text-wrap:balance;letter-spacing:-.02em}
+.lede{font-size:1.1rem;color:var(--fg-dim);max-width:62ch;margin:0}
+
+/* ---- índice ---- */
+nav.toc{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;margin-block:28px}
+nav.toc h2{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dim);margin:0 0 12px}
+nav.toc ol{margin:0;padding-left:1.3em;columns:2;column-gap:28px;font-size:.93rem}
+nav.toc li{margin-bottom:5px;break-inside:avoid}
+nav.toc a{color:var(--fg);text-decoration:none;border-bottom:1px solid transparent}
+nav.toc a:hover{border-bottom-color:var(--ember);color:var(--ember)}
+@media(max-width:560px){nav.toc ol{columns:1}}
+
+/* ---- secciones ---- */
+section{padding-block:40px 8px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none}
+h2{font-family:var(--font-display);font-size:clamp(1.5rem,3.6vw,2.1rem);line-height:1.12;margin:0 0 6px;letter-spacing:-.015em;text-wrap:balance}
+h2 .num{font-family:var(--font-mono);font-size:.62em;color:var(--ember);margin-right:.55em;font-weight:500}
+h3{font-family:var(--font-display);font-size:1.2rem;margin:34px 0 8px;letter-spacing:-.01em}
+h4{font-family:var(--font-body);font-size:1rem;font-weight:600;margin:22px 0 4px}
+p{margin:0 0 15px;max-width:70ch}
+ul,ol{max-width:70ch;padding-left:1.25em}
+li{margin-bottom:7px}
+strong{font-weight:600}
+code{font-family:var(--font-mono);font-size:.87em;background:var(--surface-2);padding:.12em .38em;border-radius:3px}
+
+/* ---- analogía ---- */
+.analogy{background:var(--teal-soft);border-left:4px solid var(--teal);padding:16px 18px;margin:20px 0;border-radius:0 4px 4px 0}
+.analogy p{margin:0;max-width:66ch}
+.analogy .tag{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;font-weight:500}
+
+/* ---- respuesta de entrevista ---- */
+.answer{background:var(--ember-soft);border:1px solid var(--ember);border-radius:4px;padding:16px 18px;margin:22px 0}
+.answer .tag{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ember);margin-bottom:7px;font-weight:500}
+.answer p{margin:0;max-width:66ch}
+.answer p + p{margin-top:10px}
+
+/* ---- diagramas ---- */
+figure{margin:28px 0;padding:0}
+.diagram{background:var(--diag-bg);border:1px solid var(--line);border-radius:4px;padding:18px 14px;overflow-x:auto}
+.diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}
+figcaption{font-size:.84rem;color:var(--fg-dim);margin-top:9px;font-style:italic;max-width:68ch}
+.svg-label{font-family:"Inter",sans-serif;font-size:12px;fill:var(--diag-text)}
+.svg-label-sm{font-family:"Inter",sans-serif;font-size:10px;fill:var(--fg-dim)}
+.svg-mono{font-family:"JetBrains Mono",monospace;font-size:11px;fill:var(--diag-text)}
+.svg-title{font-family:"Space Grotesk",sans-serif;font-size:13px;font-weight:600;fill:var(--diag-text)}
+.box{fill:var(--diag-fill);stroke:var(--diag-stroke);stroke-width:1.2}
+.box-ember{fill:var(--ember-soft);stroke:var(--ember);stroke-width:1.4}
+.box-teal{fill:var(--teal-soft);stroke:var(--teal);stroke-width:1.4}
+.ln{stroke:var(--diag-stroke);stroke-width:1.3;fill:none}
+.ln-dash{stroke:var(--diag-stroke);stroke-width:1.2;fill:none;stroke-dasharray:4 3}
+.ln-ember{stroke:var(--ember);stroke-width:1.6;fill:none}
+
+/* ---- código ---- */
+pre{background:var(--code-bg);color:var(--code-fg);padding:15px 16px;border-radius:4px;overflow-x:auto;font-family:var(--font-mono);font-size:.82rem;line-height:1.55;margin:16px 0}
+pre code{background:none;padding:0;font-size:inherit;color:inherit}
+.cmt{color:#8a8f7d}
+.kw{color:#e08a6b}
+.str{color:#9ec49a}
+
+/* ---- tablas ---- */
+.tbl-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:4px}
+table{border-collapse:collapse;width:100%;font-size:.89rem;min-width:420px}
+th{text-align:left;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-dim);padding:10px 12px;border-bottom:1.5px solid var(--line);background:var(--surface-2);font-weight:500}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:600}
+
+/* ---- tarjetas ---- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin:20px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 15px;min-width:0}
+.card h4{margin:0 0 5px;font-family:var(--font-display);font-size:.98rem}
+.card p{margin:0;font-size:.88rem;color:var(--fg-dim)}
+
+/* ---- Q&A ---- */
+.qa{border-left:3px solid var(--line);padding-left:16px;margin:18px 0}
+.qa .q{font-weight:600;margin:0 0 6px;font-family:var(--font-display);font-size:1.02rem}
+.qa .a{margin:0;color:var(--fg-dim);font-size:.94rem}
+.qa .a strong{color:var(--fg)}
+
+/* ---- trampas ---- */
+.trap{display:flex;gap:11px;align-items:flex-start;margin:11px 0;font-size:.92rem}
+.trap .mk{flex:0 0 auto;font-family:var(--font-mono);font-size:.7rem;font-weight:500;letter-spacing:.08em;color:var(--amber);border:1px solid var(--amber);border-radius:2px;padding:2px 5px;margin-top:2px}
+.trap p{margin:0}
+footer{margin-top:52px;padding-top:20px;border-top:3px solid var(--fg);font-size:.86rem;color:var(--fg-dim)}
+a{color:var(--ember)}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">Guía de preparación · Data Engineering</p>
+  <h1>Databricks de cero a entrevista</h1>
+  <p class="lede">Cada concepto explicado con palabras normales, una analogía del mundo real y un dibujo. Si entiendes los dibujos, entiendes Databricks.</p>
+</header>
+
+<nav class="toc">
+  <h2>Contenido</h2>
+  <ol>
+    <li><a href="#que-es">¿Qué es Databricks?</a></li>
+    <li><a href="#arquitectura">Arquitectura: Control Plane y Data Plane</a></li>
+    <li><a href="#cluster">El Cluster: Driver y Workers</a></li>
+    <li><a href="#spark">Spark: cómo piensa</a></li>
+    <li><a href="#dag">El DAG explicado</a></li>
+    <li><a href="#job-stage-task">Job → Stage → Task</a></li>
+    <li><a href="#particiones">Particiones y Shuffle</a></li>
+    <li><a href="#delta">Delta Lake y el transaction log</a></li>
+    <li><a href="#medallion">Arquitectura Medallion</a></li>
+    <li><a href="#workflows">Workflows: Jobs con tareas</a></li>
+    <li><a href="#unity">Unity Catalog</a></li>
+    <li><a href="#streaming">Auto Loader y Streaming</a></li>
+    <li><a href="#dlt">Delta Live Tables</a></li>
+    <li><a href="#performance">Rendimiento y optimización</a></li>
+    <li><a href="#preguntas">30 preguntas de entrevista</a></li>
+    <li><a href="#trampas">Trampas típicas</a></li>
+    <li><a href="#cheatsheet">Cheat sheet de código</a></li>
+  </ol>
+</nav>
+
+<!-- ============ 1 ============ -->
+<section id="que-es">
+<h2><span class="num">01</span>¿Qué es Databricks?</h2>
+
+<p>Databricks es una <strong>plataforma en la nube para trabajar con datos</strong>. En un solo lugar junta: dónde se guardan los datos, la potencia de cómputo para procesarlos, el editor donde escribes el código, el programador de tareas automáticas y las herramientas de machine learning.</p>
+
+<p>Antes de que existiera, una empresa necesitaba cinco o seis productos distintos para eso, y alguien tenía que pegarlos con cinta. Databricks los unifica.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Piensa en una <strong>cocina industrial completa</strong>. La <em>bodega</em> es donde guardas los ingredientes (tu storage en la nube). Los <em>cocineros</em> son la potencia de cómputo. Las <em>recetas</em> son tus notebooks. El <em>jefe de cocina que organiza turnos</em> es el scheduler de Jobs. Antes alquilabas la bodega a una empresa, los cocineros a otra y comprabas las recetas aparte. Databricks te entrega la cocina montada.</p>
+</div>
+
+<h3>El concepto clave: Lakehouse</h3>
+<p>Esta es la palabra que <strong>siempre</strong> aparece en una entrevista de Databricks. Para entenderla hay que conocer las dos cosas que existían antes.</p>
+
+<div class="cards">
+  <div class="card"><h4>Data Warehouse</h4><p>Ordenadísimo. Tablas con estructura fija, rápido para consultas de negocio. Pero caro y solo acepta datos limpios y tabulares. No puedes meter videos, JSON raros ni fotos.</p></div>
+  <div class="card"><h4>Data Lake</h4><p>Acepta todo: archivos, imágenes, logs, lo que sea. Barato. Pero no tiene orden ni garantías, así que se convierte fácilmente en un "data swamp" (pantano) donde nadie encuentra nada ni confía en los números.</p></div>
+  <div class="card"><h4>Lakehouse</h4><p>Guardas los archivos barato como en un lake, pero encima pones una capa (Delta Lake) que les da el orden, las garantías y la velocidad de un warehouse. Lo mejor de los dos.</p></div>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 290" role="img" aria-label="Comparación entre Data Warehouse, Data Lake y Lakehouse">
+  <!-- Warehouse -->
+  <text x="110" y="20" text-anchor="middle" class="svg-title">Data Warehouse</text>
+  <rect x="22" y="32" width="176" height="200" rx="4" class="box"/>
+  <rect x="38" y="48" width="144" height="22" rx="2" class="box-teal"/>
+  <text x="110" y="63" text-anchor="middle" class="svg-label-sm">tabla ventas</text>
+  <rect x="38" y="76" width="144" height="22" rx="2" class="box-teal"/>
+  <text x="110" y="91" text-anchor="middle" class="svg-label-sm">tabla clientes</text>
+  <rect x="38" y="104" width="144" height="22" rx="2" class="box-teal"/>
+  <text x="110" y="119" text-anchor="middle" class="svg-label-sm">tabla productos</text>
+  <text x="110" y="152" text-anchor="middle" class="svg-label">✓ rápido, ordenado</text>
+  <text x="110" y="172" text-anchor="middle" class="svg-label">✗ caro</text>
+  <text x="110" y="192" text-anchor="middle" class="svg-label">✗ solo datos tabulares</text>
+  <text x="110" y="212" text-anchor="middle" class="svg-label">✗ nada de ML</text>
+
+  <!-- Lake -->
+  <text x="380" y="20" text-anchor="middle" class="svg-title">Data Lake</text>
+  <rect x="292" y="32" width="176" height="200" rx="4" class="box"/>
+  <rect x="306" y="48" width="48" height="20" rx="2" class="box"/><text x="330" y="62" text-anchor="middle" class="svg-label-sm">.csv</text>
+  <rect x="360" y="52" width="52" height="20" rx="2" class="box"/><text x="386" y="66" text-anchor="middle" class="svg-label-sm">.json</text>
+  <rect x="416" y="46" width="42" height="20" rx="2" class="box"/><text x="437" y="60" text-anchor="middle" class="svg-label-sm">.jpg</text>
+  <rect x="312" y="76" width="56" height="20" rx="2" class="box"/><text x="340" y="90" text-anchor="middle" class="svg-label-sm">.parquet</text>
+  <rect x="374" y="80" width="46" height="20" rx="2" class="box"/><text x="397" y="94" text-anchor="middle" class="svg-label-sm">logs</text>
+  <rect x="424" y="74" width="36" height="20" rx="2" class="box"/><text x="442" y="88" text-anchor="middle" class="svg-label-sm">.mp4</text>
+  <rect x="320" y="104" width="50" height="20" rx="2" class="box"/><text x="345" y="118" text-anchor="middle" class="svg-label-sm">.xml</text>
+  <text x="380" y="152" text-anchor="middle" class="svg-label">✓ barato, acepta todo</text>
+  <text x="380" y="172" text-anchor="middle" class="svg-label">✗ sin garantías ACID</text>
+  <text x="380" y="192" text-anchor="middle" class="svg-label">✗ lento para consultas</text>
+  <text x="380" y="212" text-anchor="middle" class="svg-label">✗ se vuelve un pantano</text>
+
+  <!-- Lakehouse -->
+  <text x="650" y="20" text-anchor="middle" class="svg-title">Lakehouse</text>
+  <rect x="562" y="32" width="176" height="200" rx="4" class="box-ember"/>
+  <rect x="578" y="46" width="144" height="26" rx="2" class="box-teal"/>
+  <text x="650" y="63" text-anchor="middle" class="svg-label-sm">capa Delta Lake</text>
+  <rect x="578" y="80" width="42" height="18" rx="2" class="box"/><text x="599" y="93" text-anchor="middle" class="svg-label-sm">.csv</text>
+  <rect x="626" y="80" width="48" height="18" rx="2" class="box"/><text x="650" y="93" text-anchor="middle" class="svg-label-sm">.json</text>
+  <rect x="680" y="80" width="42" height="18" rx="2" class="box"/><text x="701" y="93" text-anchor="middle" class="svg-label-sm">.jpg</text>
+  <rect x="578" y="102" width="144" height="18" rx="2" class="box"/>
+  <text x="650" y="115" text-anchor="middle" class="svg-label-sm">archivos baratos en la nube</text>
+  <text x="650" y="152" text-anchor="middle" class="svg-label">✓ barato + rápido</text>
+  <text x="650" y="172" text-anchor="middle" class="svg-label">✓ ACID y versiones</text>
+  <text x="650" y="192" text-anchor="middle" class="svg-label">✓ BI y ML juntos</text>
+  <text x="650" y="212" text-anchor="middle" class="svg-label">✓ una sola copia</text>
+
+  <path d="M205 132 L285 132" class="ln-dash" marker-end="url(#ar1)"/>
+  <path d="M475 132 L555 132" class="ln-dash" marker-end="url(#ar1)"/>
+  <defs><marker id="ar1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--diag-stroke)" stroke-width="1.2"/></marker></defs>
+  <text x="650" y="258" text-anchor="middle" class="svg-label-sm">una sola fuente de verdad para analistas, ingenieros y científicos de datos</text>
+</svg>
+</div>
+<figcaption>El Lakehouse no es un producto nuevo encima de los otros dos: es poner una capa de metadatos y transacciones (Delta Lake) sobre archivos baratos, para que se comporten como tablas de warehouse.</figcaption>
+</figure>
+
+<div class="answer">
+  <span class="tag">Si te lo preguntan, responde así</span>
+  <p>"Un Lakehouse es una arquitectura que combina el almacenamiento barato y flexible de un data lake con las garantías transaccionales y el rendimiento de un data warehouse. En Databricks eso se logra con Delta Lake, que añade un log de transacciones sobre archivos Parquet en el object storage. El beneficio principal es que eliminas la duplicación de datos: BI, data engineering y machine learning trabajan sobre la misma copia, con un solo modelo de gobierno."</p>
+</div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section id="arquitectura">
+<h2><span class="num">02</span>Arquitectura: Control Plane y Data Plane</h2>
+
+<p>Esta separación es <strong>la pregunta de arquitectura más común</strong>. Databricks está partido en dos mitades que viven en sitios distintos.</p>
+
+<p>El <strong>Control Plane</strong> vive en la cuenta cloud de Databricks. Ahí está la interfaz web, el código de tus notebooks, la configuración de los clusters, el scheduler de jobs y los permisos. Es el "cerebro administrativo".</p>
+
+<p>El <strong>Data Plane</strong> (hoy llamado <em>Compute Plane</em>) vive en <strong>tu</strong> cuenta cloud. Ahí se levantan las máquinas virtuales que procesan los datos, y ahí está tu storage. <strong>Tus datos nunca salen de tu cuenta.</strong> Esa frase es la que buscan los entrevistadores.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Es como contratar una <strong>empresa de mudanzas</strong>. La oficina de la empresa (control plane) tiene los formularios, la agenda y los contratos. Pero los camiones y los muebles (data plane) están en tu casa. La oficina decide <em>cuándo</em> y <em>cómo</em> se mueven las cosas, pero nunca se lleva tus muebles a su oficina.</p>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 400" role="img" aria-label="Diagrama del Control Plane de Databricks y el Data Plane en la cuenta del cliente">
+  <!-- control plane -->
+  <rect x="20" y="24" width="720" height="140" rx="6" class="box-ember"/>
+  <text x="36" y="46" class="svg-title">CONTROL PLANE · cuenta cloud de Databricks</text>
+  <rect x="40" y="58" width="128" height="44" rx="3" class="box"/>
+  <text x="104" y="76" text-anchor="middle" class="svg-label">Web UI</text>
+  <text x="104" y="92" text-anchor="middle" class="svg-label-sm">workspace, editor</text>
+
+  <rect x="180" y="58" width="128" height="44" rx="3" class="box"/>
+  <text x="244" y="76" text-anchor="middle" class="svg-label">Job Scheduler</text>
+  <text x="244" y="92" text-anchor="middle" class="svg-label-sm">workflows, triggers</text>
+
+  <rect x="320" y="58" width="128" height="44" rx="3" class="box"/>
+  <text x="384" y="76" text-anchor="middle" class="svg-label">Cluster Manager</text>
+  <text x="384" y="92" text-anchor="middle" class="svg-label-sm">crea y apaga VMs</text>
+
+  <rect x="460" y="58" width="128" height="44" rx="3" class="box"/>
+  <text x="524" y="76" text-anchor="middle" class="svg-label">Unity Catalog</text>
+  <text x="524" y="92" text-anchor="middle" class="svg-label-sm">permisos, linaje</text>
+
+  <rect x="600" y="58" width="120" height="44" rx="3" class="box"/>
+  <text x="660" y="76" text-anchor="middle" class="svg-label">Notebooks</text>
+  <text x="660" y="92" text-anchor="middle" class="svg-label-sm">código, resultados</text>
+
+  <text x="40" y="128" class="svg-label-sm">Aquí vive la configuración y los metadatos. NO viven aquí tus datos de negocio.</text>
+  <text x="40" y="148" class="svg-label-sm">Databricks administra y actualiza todo esto.</text>
+
+  <!-- flechas -->
+  <path d="M250 166 L250 210" class="ln-ember" marker-end="url(#ar2)"/>
+  <text x="262" y="192" class="svg-label-sm">órdenes de control</text>
+  <path d="M520 210 L520 166" class="ln-dash" marker-end="url(#ar2)"/>
+  <text x="532" y="192" class="svg-label-sm">estado y logs</text>
+
+  <!-- data plane -->
+  <rect x="20" y="214" width="720" height="168" rx="6" class="box-teal"/>
+  <text x="36" y="236" class="svg-title">DATA PLANE (COMPUTE PLANE) · TU cuenta cloud</text>
+
+  <rect x="40" y="250" width="330" height="112" rx="4" class="box"/>
+  <text x="205" y="270" text-anchor="middle" class="svg-label">Clusters / SQL Warehouses</text>
+  <rect x="56" y="280" width="68" height="30" rx="2" class="box-ember"/><text x="90" y="299" text-anchor="middle" class="svg-label-sm">Driver</text>
+  <rect x="134" y="280" width="58" height="30" rx="2" class="box"/><text x="163" y="299" text-anchor="middle" class="svg-label-sm">Worker</text>
+  <rect x="200" y="280" width="58" height="30" rx="2" class="box"/><text x="229" y="299" text-anchor="middle" class="svg-label-sm">Worker</text>
+  <rect x="266" y="280" width="58" height="30" rx="2" class="box"/><text x="295" y="299" text-anchor="middle" class="svg-label-sm">Worker</text>
+  <text x="205" y="332" text-anchor="middle" class="svg-label-sm">máquinas virtuales que se crean al encender</text>
+  <text x="205" y="348" text-anchor="middle" class="svg-label-sm">y se destruyen al apagar el cluster</text>
+
+  <rect x="390" y="250" width="330" height="112" rx="4" class="box"/>
+  <text x="555" y="270" text-anchor="middle" class="svg-label">Cloud Object Storage</text>
+  <text x="555" y="288" text-anchor="middle" class="svg-label-sm">S3 · ADLS · GCS</text>
+  <rect x="412" y="298" width="130" height="24" rx="2" class="box-teal"/><text x="477" y="314" text-anchor="middle" class="svg-label-sm">tablas Delta</text>
+  <rect x="552" y="298" width="146" height="24" rx="2" class="box-teal"/><text x="625" y="314" text-anchor="middle" class="svg-label-sm">archivos crudos</text>
+  <text x="555" y="340" text-anchor="middle" class="svg-label-sm">Tus datos viven aquí y solo aquí.</text>
+  <text x="555" y="356" text-anchor="middle" class="svg-label-sm">Nunca se copian al control plane.</text>
+
+  <path d="M372 306 L386 306" class="ln" marker-end="url(#ar2)"/>
+  <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--diag-stroke)" stroke-width="1.3"/></marker></defs>
+</svg>
+</div>
+<figcaption>El control plane manda las instrucciones; el data plane hace el trabajo sobre datos que nunca abandonan tu cuenta cloud. Esa frontera es el argumento de seguridad de Databricks.</figcaption>
+</figure>
+
+<h3>Workspace</h3>
+<p>Un <strong>workspace</strong> es tu espacio de trabajo: la URL donde entras, con tus notebooks, carpetas, clusters y jobs. Una empresa suele tener varios (dev, staging, producción). Un workspace vive en una región cloud concreta.</p>
+
+<h3>Serverless</h3>
+<p>Databricks ofrece además opciones <strong>serverless</strong>: el compute se levanta en la cuenta de Databricks y arranca en segundos, sin esperar 5 minutos a que nazcan las VMs. Pagas solo por el tiempo de consulta. La contrapartida es menos control sobre la configuración de la máquina. Si te preguntan cuándo usarlo: para SQL interactivo y BI, donde el arranque rápido importa más que el control fino.</p>
+</section>
+
+<!-- ============ 3 ============ -->
+<section id="cluster">
+<h2><span class="num">03</span>El Cluster: Driver y Workers</h2>
+
+<p>Un <strong>cluster</strong> es un grupo de computadoras trabajando juntas como si fueran una sola. Tiene dos tipos de miembros, y la diferencia entre ellos se pregunta siempre.</p>
+
+<p>El <strong>Driver</strong> es el jefe. Recibe tu código, lo convierte en un plan, reparte el trabajo y recoge los resultados. Hay exactamente uno. Si el driver se cae, se cae todo.</p>
+
+<p>Los <strong>Workers</strong> (o <em>Executors</em>) son los obreros. Cada uno recibe un pedazo de los datos y hace el cálculo sobre ese pedazo. Puede haber desde uno hasta cientos.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Tienes que contar cuántas páginas hay en una biblioteca de 10.000 libros. Tú solo tardarías semanas. Pero si eres el <strong>bibliotecario jefe</strong> (driver) y tienes 20 ayudantes (workers), le das 500 libros a cada uno, cada quien cuenta lo suyo en paralelo, y tú solo sumas los 20 números que te entregan. El jefe no cuenta páginas: organiza y suma al final.</p>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 330" role="img" aria-label="Driver y workers de un cluster de Spark, con slots y particiones">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">Anatomía de un Cluster</text>
+
+  <!-- driver -->
+  <rect x="270" y="34" width="220" height="80" rx="4" class="box-ember"/>
+  <text x="380" y="54" text-anchor="middle" class="svg-title">DRIVER</text>
+  <text x="380" y="72" text-anchor="middle" class="svg-label-sm">· ejecuta tu código principal</text>
+  <text x="380" y="87" text-anchor="middle" class="svg-label-sm">· construye el DAG y el plan</text>
+  <text x="380" y="102" text-anchor="middle" class="svg-label-sm">· reparte tasks y junta resultados</text>
+
+  <!-- lineas -->
+  <path d="M330 116 L160 150" class="ln" marker-end="url(#ar3)"/>
+  <path d="M372 116 L372 150" class="ln" marker-end="url(#ar3)"/>
+  <path d="M432 116 L600 150" class="ln" marker-end="url(#ar3)"/>
+  <defs><marker id="ar3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--diag-stroke)" stroke-width="1.3"/></marker></defs>
+
+  <!-- workers -->
+  <g>
+    <rect x="40" y="154" width="200" height="130" rx="4" class="box"/>
+    <text x="140" y="174" text-anchor="middle" class="svg-title">WORKER 1</text>
+    <text x="140" y="190" text-anchor="middle" class="svg-label-sm">4 cores · 16 GB RAM</text>
+    <rect x="56" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="75" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="98" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="117" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="140" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="159" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="182" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="201" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <text x="140" y="246" text-anchor="middle" class="svg-label-sm">4 tasks en paralelo</text>
+    <rect x="56" y="254" width="164" height="20" rx="2" class="box"/>
+    <text x="138" y="268" text-anchor="middle" class="svg-label-sm">particiones P1 P2 P3 P4</text>
+  </g>
+  <g>
+    <rect x="272" y="154" width="200" height="130" rx="4" class="box"/>
+    <text x="372" y="174" text-anchor="middle" class="svg-title">WORKER 2</text>
+    <text x="372" y="190" text-anchor="middle" class="svg-label-sm">4 cores · 16 GB RAM</text>
+    <rect x="288" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="307" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="330" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="349" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="372" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="391" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="414" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="433" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <text x="372" y="246" text-anchor="middle" class="svg-label-sm">4 tasks en paralelo</text>
+    <rect x="288" y="254" width="164" height="20" rx="2" class="box"/>
+    <text x="370" y="268" text-anchor="middle" class="svg-label-sm">particiones P5 P6 P7 P8</text>
+  </g>
+  <g>
+    <rect x="504" y="154" width="200" height="130" rx="4" class="box"/>
+    <text x="604" y="174" text-anchor="middle" class="svg-title">WORKER 3</text>
+    <text x="604" y="190" text-anchor="middle" class="svg-label-sm">4 cores · 16 GB RAM</text>
+    <rect x="520" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="539" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="562" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="581" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="604" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="623" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <rect x="646" y="200" width="38" height="26" rx="2" class="box-teal"/><text x="665" y="217" text-anchor="middle" class="svg-label-sm">slot</text>
+    <text x="604" y="246" text-anchor="middle" class="svg-label-sm">4 tasks en paralelo</text>
+    <rect x="520" y="254" width="164" height="20" rx="2" class="box"/>
+    <text x="602" y="268" text-anchor="middle" class="svg-label-sm">particiones P9 P10 P11 P12</text>
+  </g>
+
+  <text x="380" y="308" text-anchor="middle" class="svg-label">12 cores totales = 12 tasks a la vez. Más particiones que slots significa que las tasks hacen cola por turnos.</text>
+</svg>
+</div>
+<figcaption>Cada core de cada worker es un "slot" que ejecuta una task. El paralelismo máximo del cluster es la suma de todos los cores de los workers; el driver no ejecuta tasks de datos.</figcaption>
+</figure>
+
+<h3>Tipos de compute</h3>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Tipo</th><th>Para qué sirve</th><th>Clave</th></tr></thead>
+<tbody>
+<tr><td>All-Purpose</td><td>Desarrollo interactivo en notebooks. Varias personas pueden compartirlo.</td><td>Más caro por DBU. Se queda encendido mientras exploras.</td></tr>
+<tr><td>Job Cluster</td><td>Se crea automáticamente cuando arranca un job y se destruye al terminar.</td><td>Más barato. Es la opción correcta para producción.</td></tr>
+<tr><td>SQL Warehouse</td><td>Consultas SQL y herramientas de BI (Power BI, Tableau).</td><td>Optimizado para SQL. Existe en versión serverless.</td></tr>
+<tr><td>Pools</td><td>Máquinas pre-encendidas en espera para que los clusters arranquen rápido.</td><td>Reduce el tiempo de arranque de minutos a segundos.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="answer">
+  <span class="tag">Pregunta clásica</span>
+  <p><strong>"¿Cuándo usarías un job cluster en vez de uno all-purpose?"</strong></p>
+  <p>"Siempre que sea una carga programada y no interactiva. El job cluster nace con el job y muere al terminar, así que no pagas tiempo ocioso y la tarifa de DBU es menor. El all-purpose lo reservo para desarrollo exploratorio, donde necesito que el estado y la caché sobrevivan entre celdas, y donde el equipo comparte el mismo compute."</p>
+</div>
+
+<h3>Autoscaling y terminación automática</h3>
+<p><strong>Autoscaling</strong>: defines un mínimo y un máximo de workers, y Databricks añade o quita según la carga. <strong>Auto-termination</strong>: el cluster se apaga solo tras X minutos sin actividad. Olvidar esto es la causa número uno de facturas infladas, y mencionarlo en una entrevista de costos suma puntos.</p>
+
+<h3>DBU</h3>
+<p>Un <strong>DBU</strong> (Databricks Unit) es la unidad con la que Databricks cobra el procesamiento. Tu factura total son dos cosas sumadas: los DBUs que cobra Databricks y las máquinas virtuales que cobra tu proveedor cloud por separado.</p>
+</section>
+
+<!-- ============ 4 ============ -->
+<section id="spark">
+<h2><span class="num">04</span>Spark: cómo piensa</h2>
+
+<p><strong>Apache Spark</strong> es el motor que hace el trabajo pesado dentro de Databricks. Databricks fue fundada por los creadores de Spark, así que esperan que lo conozcas.</p>
+
+<h3>Transformaciones vs Acciones</h3>
+<p>Esta es <em>la</em> idea que hay que tener clara. Spark divide todo lo que puedes pedirle en dos categorías.</p>
+
+<p>Una <strong>transformación</strong> describe un cambio: filtrar, agrupar, unir, seleccionar columnas. Cuando escribes una transformación, <strong>no pasa absolutamente nada</strong>. Spark solo anota la instrucción en una lista.</p>
+
+<p>Una <strong>acción</strong> pide un resultado real: contar filas, mostrar datos, escribir a disco. Solo cuando llega una acción Spark mira toda la lista, la optimiza y <em>entonces</em> ejecuta.</p>
+
+<p>Esto se llama <strong>evaluación perezosa</strong> (lazy evaluation).</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Vas al supermercado con una lista. Un cocinero ingenuo iría al supermercado una vez por cada ingrediente: va, compra el tomate, vuelve; va, compra la cebolla, vuelve. Spark en cambio <strong>anota toda la lista primero</strong>. Cuando dices "ya, voy a cocinar" (la acción), mira la lista completa, se da cuenta de que el tomate y la cebolla están en el mismo pasillo, reordena el recorrido y hace un solo viaje eficiente.</p>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 300" role="img" aria-label="Transformaciones perezosas acumulándose hasta que una acción dispara la ejecución">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">Evaluación perezosa</text>
+
+  <rect x="24" y="36" width="440" height="152" rx="4" class="box"/>
+  <text x="44" y="58" class="svg-label">TRANSFORMACIONES · no ejecutan nada, solo se apuntan</text>
+
+  <rect x="44" y="70" width="400" height="26" rx="2" class="box-teal"/>
+  <text x="54" y="88" class="svg-mono">df = spark.read.table("ventas")</text>
+  <text x="400" y="88" class="svg-label-sm">anotado</text>
+
+  <rect x="44" y="102" width="400" height="26" rx="2" class="box-teal"/>
+  <text x="54" y="120" class="svg-mono">df = df.filter(col("pais") == "CO")</text>
+  <text x="400" y="120" class="svg-label-sm">anotado</text>
+
+  <rect x="44" y="134" width="400" height="26" rx="2" class="box-teal"/>
+  <text x="54" y="152" class="svg-mono">df = df.groupBy("mes").sum("total")</text>
+  <text x="400" y="152" class="svg-label-sm">anotado</text>
+
+  <text x="44" y="180" class="svg-label-sm">Hasta aquí: 0 segundos de cómputo, 0 datos leídos.</text>
+
+  <path d="M470 112 L520 112" class="ln-ember" marker-end="url(#ar4)"/>
+  <defs><marker id="ar4" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,1 L8,4.5 L0,8" fill="none" stroke="var(--ember)" stroke-width="1.6"/></marker></defs>
+
+  <rect x="528" y="56" width="208" height="112" rx="4" class="box-ember"/>
+  <text x="632" y="78" text-anchor="middle" class="svg-label">ACCIÓN</text>
+  <rect x="548" y="88" width="168" height="24" rx="2" class="box"/>
+  <text x="558" y="105" class="svg-mono">df.show()</text>
+  <text x="632" y="132" text-anchor="middle" class="svg-label-sm">Spark despierta, optimiza</text>
+  <text x="632" y="148" text-anchor="middle" class="svg-label-sm">el plan completo y ejecuta</text>
+
+  <!-- abajo: optimizacion -->
+  <rect x="24" y="204" width="712" height="76" rx="4" class="box"/>
+  <text x="44" y="226" class="svg-label">Qué gana Spark con esperar</text>
+  <text x="44" y="246" class="svg-label-sm">· Empuja el filtro hacia la lectura (predicate pushdown): lee solo Colombia, no toda la tabla.</text>
+  <text x="44" y="262" class="svg-label-sm">· Lee solo las columnas mes y total (column pruning), ignorando las otras 40 columnas del archivo.</text>
+</svg>
+</div>
+<figcaption>Ejemplos de transformaciones: <code>select</code>, <code>filter</code>, <code>withColumn</code>, <code>groupBy</code>, <code>join</code>. Ejemplos de acciones: <code>show</code>, <code>count</code>, <code>collect</code>, <code>write</code>, <code>display</code>.</figcaption>
+</figure>
+
+<h3>Narrow vs Wide: la distinción que define el rendimiento</h3>
+<p>Las transformaciones se dividen otra vez, y esta división es la que explica por qué un job es lento.</p>
+
+<p>Una transformación <strong>narrow</strong> (estrecha) se puede hacer sin mirar lo que tienen los demás workers. Filtrar una fila solo necesita esa fila. Cada worker trabaja aislado, en paralelo perfecto, sin mover datos por la red. Es barato.</p>
+
+<p>Una transformación <strong>wide</strong> (ancha) necesita juntar datos que están repartidos entre workers. Para contar ventas por país, todas las filas de Colombia tienen que terminar en la misma máquina. Eso obliga a mover datos por la red: es el <strong>shuffle</strong>, y es la operación más cara de Spark.</p>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 290" role="img" aria-label="Diferencia entre transformación narrow y wide con shuffle">
+  <!-- narrow -->
+  <text x="178" y="20" text-anchor="middle" class="svg-title">NARROW · sin shuffle</text>
+  <text x="178" y="38" text-anchor="middle" class="svg-label-sm">filter, select, withColumn, map</text>
+
+  <rect x="36" y="52" width="80" height="34" rx="3" class="box"/><text x="76" y="74" text-anchor="middle" class="svg-label-sm">P1</text>
+  <rect x="138" y="52" width="80" height="34" rx="3" class="box"/><text x="178" y="74" text-anchor="middle" class="svg-label-sm">P2</text>
+  <rect x="240" y="52" width="80" height="34" rx="3" class="box"/><text x="280" y="74" text-anchor="middle" class="svg-label-sm">P3</text>
+
+  <path d="M76 90 L76 134" class="ln" marker-end="url(#ar5)"/>
+  <path d="M178 90 L178 134" class="ln" marker-end="url(#ar5)"/>
+  <path d="M280 90 L280 134" class="ln" marker-end="url(#ar5)"/>
+  <defs><marker id="ar5" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--diag-stroke)" stroke-width="1.3"/></marker></defs>
+
+  <rect x="36" y="138" width="80" height="34" rx="3" class="box-teal"/><text x="76" y="160" text-anchor="middle" class="svg-label-sm">P1'</text>
+  <rect x="138" y="138" width="80" height="34" rx="3" class="box-teal"/><text x="178" y="160" text-anchor="middle" class="svg-label-sm">P2'</text>
+  <rect x="240" y="138" width="80" height="34" rx="3" class="box-teal"/><text x="280" y="160" text-anchor="middle" class="svg-label-sm">P3'</text>
+
+  <text x="178" y="200" text-anchor="middle" class="svg-label-sm">Cada partición se transforma sola.</text>
+  <text x="178" y="216" text-anchor="middle" class="svg-label-sm">Nada viaja por la red.</text>
+  <text x="178" y="232" text-anchor="middle" class="svg-label-sm">Spark las encadena en una sola etapa</text>
+  <text x="178" y="248" text-anchor="middle" class="svg-label-sm">(pipelining). Muy rápido.</text>
+
+  <line x1="390" y1="30" x2="390" y2="260" class="ln-dash"/>
+
+  <!-- wide -->
+  <text x="578" y="20" text-anchor="middle" class="svg-title">WIDE · con shuffle</text>
+  <text x="578" y="38" text-anchor="middle" class="svg-label-sm">groupBy, join, distinct, orderBy</text>
+
+  <rect x="436" y="52" width="80" height="34" rx="3" class="box"/><text x="476" y="74" text-anchor="middle" class="svg-label-sm">P1</text>
+  <rect x="538" y="52" width="80" height="34" rx="3" class="box"/><text x="578" y="74" text-anchor="middle" class="svg-label-sm">P2</text>
+  <rect x="640" y="52" width="80" height="34" rx="3" class="box"/><text x="680" y="74" text-anchor="middle" class="svg-label-sm">P3</text>
+
+  <path d="M476 90 L476 134" class="ln-ember"/>
+  <path d="M476 90 L578 134" class="ln-ember"/>
+  <path d="M476 90 L680 134" class="ln-ember"/>
+  <path d="M578 90 L476 134" class="ln-ember"/>
+  <path d="M578 90 L578 134" class="ln-ember"/>
+  <path d="M578 90 L680 134" class="ln-ember"/>
+  <path d="M680 90 L476 134" class="ln-ember"/>
+  <path d="M680 90 L578 134" class="ln-ember"/>
+  <path d="M680 90 L680 134" class="ln-ember"/>
+
+  <rect x="436" y="138" width="80" height="34" rx="3" class="box-ember"/><text x="476" y="160" text-anchor="middle" class="svg-label-sm">CO</text>
+  <rect x="538" y="138" width="80" height="34" rx="3" class="box-ember"/><text x="578" y="160" text-anchor="middle" class="svg-label-sm">MX</text>
+  <rect x="640" y="138" width="80" height="34" rx="3" class="box-ember"/><text x="680" y="160" text-anchor="middle" class="svg-label-sm">AR</text>
+
+  <text x="578" y="200" text-anchor="middle" class="svg-label-sm">Las filas se reparten por clave.</text>
+  <text x="578" y="216" text-anchor="middle" class="svg-label-sm">Se escriben a disco, viajan por red</text>
+  <text x="578" y="232" text-anchor="middle" class="svg-label-sm">y se vuelven a leer. Corta la etapa</text>
+  <text x="578" y="248" text-anchor="middle" class="svg-label-sm">en dos. Es lo caro.</text>
+</svg>
+</div>
+<figcaption>Regla práctica para la entrevista: cuenta los shuffles de tu query y habrás contado los cuellos de botella. Cada línea naranja que cruza es datos moviéndose por la red.</figcaption>
+</figure>
+
+<h3>RDD, DataFrame y Dataset</h3>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>API</th><th>Qué es</th><th>Cuándo usarla</th></tr></thead>
+<tbody>
+<tr><td>RDD</td><td>La API original y de más bajo nivel. Una colección distribuida de objetos sin esquema. Tú controlas todo a mano.</td><td>Casi nunca hoy. Solo para control muy fino o datos sin estructura alguna. No recibe optimizaciones del Catalyst.</td></tr>
+<tr><td>DataFrame</td><td>Una tabla distribuida con columnas y tipos. Es la API estándar. Spark la optimiza automáticamente.</td><td>El 95% del trabajo. Es lo que debes decir que usas.</td></tr>
+<tr><td>Dataset</td><td>Como un DataFrame pero con tipos verificados en compilación. Solo existe en Scala y Java.</td><td>En Scala cuando quieres seguridad de tipos. En Python no existe.</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Catalyst y Tungsten</h3>
+<p><strong>Catalyst</strong> es el optimizador de consultas: toma tu código, lo reescribe en algo equivalente pero más rápido (mueve filtros, reordena joins, elimina columnas no usadas) y genera el plan físico. <strong>Tungsten</strong> es la capa de ejecución: gestiona memoria fuera del heap de la JVM y genera código Java optimizado en tiempo real para que el cálculo vaya al ritmo de la máquina.</p>
+
+<p><strong>AQE (Adaptive Query Execution)</strong> es la mejora más citada: Spark mira las estadísticas <em>reales</em> a mitad de la ejecución y reajusta el plan — fusiona particiones que quedaron diminutas, cambia la estrategia de join, y parte las particiones sesgadas. Está activo por defecto en Databricks.</p>
+</section>
+
+<!-- ============ 5 ============ -->
+<section id="dag">
+<h2><span class="num">05</span>El DAG explicado</h2>
+
+<p><strong>DAG</strong> significa Directed Acyclic Graph: grafo dirigido acíclico. Suena terrible; el concepto es simple.</p>
+
+<p><strong>Grafo</strong>: un dibujo de cajas conectadas por flechas. <strong>Dirigido</strong>: las flechas van en un solo sentido. <strong>Acíclico</strong>: nunca vuelve sobre sus pasos, no hay bucles. Si pudiera volver atrás, nunca terminaría.</p>
+
+<p>En Spark, el DAG es <strong>el mapa de todos los pasos necesarios para producir tu resultado y en qué orden</strong>. Lo construye el driver cuando llega una acción, a partir de todas las transformaciones que anotó.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Una receta de pasta dibujada como diagrama. "Hervir agua" y "picar ajo" no dependen una de otra, así que pueden pasar <em>al mismo tiempo</em> (paralelo). Pero "echar la pasta" necesita que el agua ya esté hirviendo (dependencia). Y nunca vuelves a "picar ajo" después de servir el plato (acíclico). Ese diagrama de la receta es un DAG.</p>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 360" role="img" aria-label="DAG de Spark mostrando dos ramas de lectura que convergen en un join y terminan en una escritura">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">DAG de un job real</text>
+  <text x="380" y="36" text-anchor="middle" class="svg-label-sm">Unir ventas con clientes, agregar por región y guardar</text>
+
+  <!-- rama A -->
+  <rect x="24" y="58" width="150" height="40" rx="3" class="box-teal"/>
+  <text x="99" y="76" text-anchor="middle" class="svg-label">read ventas</text>
+  <text x="99" y="90" text-anchor="middle" class="svg-label-sm">200 particiones</text>
+
+  <path d="M99 100 L99 128" class="ln" marker-end="url(#ar6)"/>
+  <rect x="24" y="132" width="150" height="40" rx="3" class="box"/>
+  <text x="99" y="150" text-anchor="middle" class="svg-label">filter año = 2026</text>
+  <text x="99" y="164" text-anchor="middle" class="svg-label-sm">narrow</text>
+
+  <path d="M99 174 L99 202" class="ln" marker-end="url(#ar6)"/>
+  <rect x="24" y="206" width="150" height="40" rx="3" class="box"/>
+  <text x="99" y="224" text-anchor="middle" class="svg-label">select 3 columnas</text>
+  <text x="99" y="238" text-anchor="middle" class="svg-label-sm">narrow</text>
+
+  <!-- rama B -->
+  <rect x="222" y="58" width="150" height="40" rx="3" class="box-teal"/>
+  <text x="297" y="76" text-anchor="middle" class="svg-label">read clientes</text>
+  <text x="297" y="90" text-anchor="middle" class="svg-label-sm">8 particiones</text>
+
+  <path d="M297 100 L297 202" class="ln" marker-end="url(#ar6)"/>
+  <rect x="222" y="206" width="150" height="40" rx="3" class="box"/>
+  <text x="297" y="224" text-anchor="middle" class="svg-label">dropDuplicates</text>
+  <text x="297" y="238" text-anchor="middle" class="svg-label-sm">wide · shuffle</text>
+
+  <!-- join -->
+  <path d="M174 226 L196 226" class="ln"/>
+  <path d="M99 250 L99 272 L380 272 L380 286" class="ln-ember" marker-end="url(#ar6b)"/>
+  <path d="M297 250 L297 272" class="ln-ember"/>
+
+  <rect x="280" y="290" width="200" height="40" rx="3" class="box-ember"/>
+  <text x="380" y="308" text-anchor="middle" class="svg-label">join on cliente_id</text>
+  <text x="380" y="322" text-anchor="middle" class="svg-label-sm">wide · shuffle</text>
+
+  <!-- continuacion derecha -->
+  <path d="M480 310 L510 310" class="ln" marker-end="url(#ar6)"/>
+  <rect x="514" y="290" width="150" height="40" rx="3" class="box-ember"/>
+  <text x="589" y="308" text-anchor="middle" class="svg-label">groupBy región</text>
+  <text x="589" y="322" text-anchor="middle" class="svg-label-sm">wide · shuffle</text>
+
+  <path d="M589 286 L589 250" class="ln" marker-end="url(#ar6)"/>
+  <rect x="514" y="206" width="150" height="40" rx="3" class="box"/>
+  <text x="589" y="230" text-anchor="middle" class="svg-label">write Delta</text>
+
+  <rect x="514" y="58" width="222" height="130" rx="4" class="box"/>
+  <text x="528" y="78" class="svg-label">Cómo leerlo</text>
+  <text x="528" y="98" class="svg-label-sm">· Las dos lecturas no dependen</text>
+  <text x="528" y="112" class="svg-label-sm">  entre sí: corren en paralelo.</text>
+  <text x="528" y="130" class="svg-label-sm">· El join espera a las dos ramas.</text>
+  <text x="528" y="148" class="svg-label-sm">· Cada caja naranja (shuffle)</text>
+  <text x="528" y="162" class="svg-label-sm">  corta el DAG en una etapa nueva.</text>
+  <text x="528" y="180" class="svg-label-sm">· 3 shuffles = 4 stages.</text>
+
+  <defs>
+    <marker id="ar6" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--diag-stroke)" stroke-width="1.3"/></marker>
+    <marker id="ar6b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--ember)" stroke-width="1.6"/></marker>
+  </defs>
+</svg>
+</div>
+<figcaption>Este es el DAG que ves en la pestaña Spark UI de Databricks. Las flechas son dependencias; lo que no está conectado puede ejecutarse simultáneamente.</figcaption>
+</figure>
+
+<p>Para qué sirve realmente el DAG: el driver lo usa para <strong>decidir qué puede ir en paralelo</strong>, para <strong>optimizar antes de ejecutar</strong>, y para <strong>recuperarse de fallos</strong>. Si un worker muere, Spark mira el DAG, ve exactamente qué pasos produjeron esa partición perdida y los recalcula solo para ella. Eso se llama <strong>lineage</strong> (linaje), y es la razón de que Spark tolere fallos sin replicar datos.</p>
+
+<div class="answer">
+  <span class="tag">Cómo responder</span>
+  <p><strong>"¿Qué es un DAG en Spark?"</strong></p>
+  <p>"Es el grafo dirigido acíclico de las operaciones que Spark debe ejecutar para resolver una acción. El driver lo construye a partir de las transformaciones acumuladas de forma perezosa, lo usa para identificar qué ramas son independientes y pueden paralelizarse, y lo divide en stages cortando en cada frontera de shuffle. Además es el mecanismo de tolerancia a fallos: el lineage del DAG le permite recalcular solo la partición perdida en vez de reiniciar el job."</p>
+</div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section id="job-stage-task">
+<h2><span class="num">06</span>Job → Stage → Task</h2>
+
+<p>Aquí hay una trampa de vocabulario que confunde a mucha gente en las entrevistas: <strong>la palabra "job" significa dos cosas distintas</strong> en Databricks.</p>
+
+<p>El <strong>Spark job</strong> (del que hablamos en esta sección) es lo que dispara una acción dentro de tu código. Un notebook puede generar veinte Spark jobs.</p>
+
+<p>El <strong>Databricks Job</strong> (o Workflow, sección 10) es una tarea programada: "ejecuta este notebook todos los días a las 6 am". Es un concepto de orquestación, no de Spark.</p>
+
+<p>Si el entrevistador pregunta por "job", vale la pena aclarar a cuál se refiere. Eso mismo demuestra que entiendes la diferencia.</p>
+
+<h3>La jerarquía de Spark</h3>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 420" role="img" aria-label="Jerarquía de aplicación, job, stage y task en Spark">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">De tu código a las tasks que corren en las máquinas</text>
+
+  <!-- application -->
+  <rect x="24" y="32" width="712" height="46" rx="4" class="box"/>
+  <text x="40" y="52" class="svg-title">APPLICATION</text>
+  <text x="40" y="69" class="svg-label-sm">Tu notebook o script completo, mientras está conectado al cluster. Contiene todos los jobs.</text>
+
+  <path d="M380 80 L380 96" class="ln" marker-end="url(#ar7)"/>
+
+  <!-- jobs -->
+  <rect x="24" y="100" width="712" height="64" rx="4" class="box-teal"/>
+  <text x="40" y="120" class="svg-title">JOBS · uno por cada acción</text>
+  <rect x="44" y="128" width="208" height="26" rx="2" class="box"/>
+  <text x="54" y="145" class="svg-mono">Job 0 — df.count()</text>
+  <rect x="264" y="128" width="208" height="26" rx="2" class="box"/>
+  <text x="274" y="145" class="svg-mono">Job 1 — df.show()</text>
+  <rect x="484" y="128" width="232" height="26" rx="2" class="box"/>
+  <text x="494" y="145" class="svg-mono">Job 2 — df.write.save()</text>
+
+  <path d="M148 166 L148 182" class="ln" marker-end="url(#ar7)"/>
+
+  <!-- stages -->
+  <rect x="24" y="186" width="712" height="90" rx="4" class="box-ember"/>
+  <text x="40" y="206" class="svg-title">STAGES · el job se corta en cada shuffle</text>
+  <rect x="44" y="214" width="188" height="48" rx="2" class="box"/>
+  <text x="138" y="232" text-anchor="middle" class="svg-label">Stage 0</text>
+  <text x="138" y="248" text-anchor="middle" class="svg-label-sm">read + filter + select</text>
+
+  <path d="M236 238 L266 238" class="ln-ember" marker-end="url(#ar7b)"/>
+  <text x="251" y="226" text-anchor="middle" class="svg-label-sm">shuffle</text>
+
+  <rect x="270" y="214" width="188" height="48" rx="2" class="box"/>
+  <text x="364" y="232" text-anchor="middle" class="svg-label">Stage 1</text>
+  <text x="364" y="248" text-anchor="middle" class="svg-label-sm">groupBy parcial</text>
+
+  <path d="M462 238 L492 238" class="ln-ember" marker-end="url(#ar7b)"/>
+  <text x="477" y="226" text-anchor="middle" class="svg-label-sm">shuffle</text>
+
+  <rect x="496" y="214" width="220" height="48" rx="2" class="box"/>
+  <text x="606" y="232" text-anchor="middle" class="svg-label">Stage 2</text>
+  <text x="606" y="248" text-anchor="middle" class="svg-label-sm">agregación final + write</text>
+
+  <path d="M138 278 L138 294" class="ln" marker-end="url(#ar7)"/>
+
+  <!-- tasks -->
+  <rect x="24" y="298" width="712" height="106" rx="4" class="box"/>
+  <text x="40" y="318" class="svg-title">TASKS · una por partición, es la unidad real de trabajo</text>
+  <text x="40" y="336" class="svg-label-sm">Stage 0 tiene 8 particiones, por tanto 8 tasks idénticas sobre datos distintos:</text>
+  <g>
+    <rect x="44" y="346" width="78" height="30" rx="2" class="box-teal"/><text x="83" y="365" text-anchor="middle" class="svg-label-sm">task 0 · P0</text>
+    <rect x="128" y="346" width="78" height="30" rx="2" class="box-teal"/><text x="167" y="365" text-anchor="middle" class="svg-label-sm">task 1 · P1</text>
+    <rect x="212" y="346" width="78" height="30" rx="2" class="box-teal"/><text x="251" y="365" text-anchor="middle" class="svg-label-sm">task 2 · P2</text>
+    <rect x="296" y="346" width="78" height="30" rx="2" class="box-teal"/><text x="335" y="365" text-anchor="middle" class="svg-label-sm">task 3 · P3</text>
+    <rect x="380" y="346" width="78" height="30" rx="2" class="box-teal"/><text x="419" y="365" text-anchor="middle" class="svg-label-sm">task 4 · P4</text>
+    <rect x="464" y="346" width="78" height="30" rx="2" class="box-teal"/><text x="503" y="365" text-anchor="middle" class="svg-label-sm">task 5 · P5</text>
+    <rect x="548" y="346" width="78" height="30" rx="2" class="box-teal"/><text x="587" y="365" text-anchor="middle" class="svg-label-sm">task 6 · P6</text>
+    <rect x="632" y="346" width="78" height="30" rx="2" class="box-teal"/><text x="671" y="365" text-anchor="middle" class="svg-label-sm">task 7 · P7</text>
+  </g>
+  <text x="40" y="394" class="svg-label-sm">Cada task se envía a un slot libre de un worker. Mismo código, distinto pedazo de datos.</text>
+
+  <defs>
+    <marker id="ar7" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--diag-stroke)" stroke-width="1.3"/></marker>
+    <marker id="ar7b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--ember)" stroke-width="1.6"/></marker>
+  </defs>
+</svg>
+</div>
+<figcaption>Las reglas memorizables: un job por acción; un stage nuevo por cada shuffle; una task por partición dentro del stage. Las tasks de un stage son el mismo código sobre datos distintos.</figcaption>
+</figure>
+
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Nivel</th><th>Definición en una línea</th><th>Cuántos hay</th></tr></thead>
+<tbody>
+<tr><td>Application</td><td>Tu programa conectado al cluster.</td><td>Uno por notebook/script conectado.</td></tr>
+<tr><td>Job</td><td>Todo lo necesario para resolver una acción.</td><td>Uno por cada acción que ejecutas.</td></tr>
+<tr><td>Stage</td><td>Un grupo de trabajo que se puede hacer sin mover datos.</td><td>Número de shuffles + 1.</td></tr>
+<tr><td>Task</td><td>El código del stage aplicado a una partición.</td><td>Tantas como particiones tenga el stage.</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="analogy">
+  <span class="tag">Analogía completa</span>
+  <p>Una <strong>mudanza</strong>. La <em>application</em> es la empresa trabajando contigo todo el día. Cada <em>job</em> es una casa que hay que mudar. Los <em>stages</em> son las fases obligatorias en orden: primero empacar todo, luego cargar el camión, luego descargar — no puedes cargar antes de empacar. Las <em>tasks</em> son "empacar la caja 7", "empacar la caja 8": trabajo idéntico sobre objetos distintos, que 10 personas pueden hacer a la vez.</p>
+</div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section id="particiones">
+<h2><span class="num">07</span>Particiones y Shuffle</h2>
+
+<p>Una <strong>partición</strong> es un pedazo de tus datos que cabe en la memoria de una máquina y que una task procesa. Si tienes 1 TB de datos y 10.000 particiones, cada una es de unos 100 MB.</p>
+
+<p>El número de particiones determina el paralelismo. Demasiado pocas y la mayoría de tus workers está de brazos cruzados. Demasiadas y pagas más en coordinación que en cálculo. El rango que se suele citar como sano es <strong>128 MB a 1 GB por partición</strong>.</p>
+
+<h3>Data skew: el problema que siempre preguntan</h3>
+<p><strong>Skew</strong> (sesgo) es cuando una partición queda muchísimo más grande que las demás. El síntoma clásico: 199 tasks terminan en 30 segundos y una task sigue corriendo 40 minutos. El stage entero no termina hasta que termina la más lenta, así que todo el cluster espera a una sola máquina.</p>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 270" role="img" aria-label="Comparación entre particiones balanceadas y particiones con data skew">
+  <text x="190" y="18" text-anchor="middle" class="svg-title">Balanceado</text>
+  <text x="570" y="18" text-anchor="middle" class="svg-title">Con skew</text>
+
+  <!-- balanced bars -->
+  <line x1="40" y1="190" x2="340" y2="190" class="ln"/>
+  <rect x="56" y="118" width="40" height="72" class="box-teal"/>
+  <rect x="106" y="112" width="40" height="78" class="box-teal"/>
+  <rect x="156" y="122" width="40" height="68" class="box-teal"/>
+  <rect x="206" y="116" width="40" height="74" class="box-teal"/>
+  <rect x="256" y="120" width="40" height="70" class="box-teal"/>
+  <text x="76" y="204" text-anchor="middle" class="svg-label-sm">t0</text>
+  <text x="126" y="204" text-anchor="middle" class="svg-label-sm">t1</text>
+  <text x="176" y="204" text-anchor="middle" class="svg-label-sm">t2</text>
+  <text x="226" y="204" text-anchor="middle" class="svg-label-sm">t3</text>
+  <text x="276" y="204" text-anchor="middle" class="svg-label-sm">t4</text>
+  <text x="190" y="228" text-anchor="middle" class="svg-label-sm">Todas terminan a la vez.</text>
+  <text x="190" y="244" text-anchor="middle" class="svg-label-sm">Stage completo: 30 s</text>
+  <text x="34" y="100" text-anchor="end" class="svg-label-sm">tiempo</text>
+
+  <line x1="400" y1="30" x2="400" y2="250" class="ln-dash"/>
+
+  <!-- skew bars -->
+  <line x1="420" y1="190" x2="720" y2="190" class="ln"/>
+  <rect x="436" y="170" width="40" height="20" class="box-teal"/>
+  <rect x="486" y="174" width="40" height="16" class="box-teal"/>
+  <rect x="536" y="46" width="40" height="144" class="box-ember"/>
+  <rect x="586" y="172" width="40" height="18" class="box-teal"/>
+  <rect x="636" y="176" width="40" height="14" class="box-teal"/>
+  <text x="456" y="204" text-anchor="middle" class="svg-label-sm">t0</text>
+  <text x="506" y="204" text-anchor="middle" class="svg-label-sm">t1</text>
+  <text x="556" y="204" text-anchor="middle" class="svg-label-sm">t2</text>
+  <text x="606" y="204" text-anchor="middle" class="svg-label-sm">t3</text>
+  <text x="656" y="204" text-anchor="middle" class="svg-label-sm">t4</text>
+  <text x="556" y="38" text-anchor="middle" class="svg-label-sm">la clave "null" cayó aquí</text>
+  <text x="570" y="228" text-anchor="middle" class="svg-label-sm">Cuatro workers ociosos esperando a t2.</text>
+  <text x="570" y="244" text-anchor="middle" class="svg-label-sm">Stage completo: 40 min</text>
+</svg>
+</div>
+<figcaption>El skew aparece cuando una clave de agrupación o join concentra las filas: valores nulos, un cliente gigante, un país con el 80% de las ventas.</figcaption>
+</figure>
+
+<h4>Cómo se arregla</h4>
+<ul>
+<li><strong>AQE skew join</strong>: en Databricks está activo por defecto y parte automáticamente las particiones sesgadas. Es la primera respuesta correcta.</li>
+<li><strong>Salting</strong>: añades un número aleatorio a la clave sesgada para repartirla entre varias particiones, agregas, y luego quitas el sufijo. Es la respuesta "manual" que demuestra profundidad.</li>
+<li><strong>Broadcast join</strong>: si una de las dos tablas es pequeña (unos cientos de MB), Spark manda una copia completa a cada worker y elimina el shuffle por completo.</li>
+<li><strong>Filtrar los nulos</strong> antes del join, si no aportan nada.</li>
+</ul>
+
+<h3>Broadcast join, con dibujo</h3>
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 240" role="img" aria-label="Diferencia entre shuffle join y broadcast join">
+  <text x="178" y="18" text-anchor="middle" class="svg-title">Shuffle join</text>
+  <text x="178" y="34" text-anchor="middle" class="svg-label-sm">ambas tablas se reparten por la red</text>
+
+  <rect x="40" y="48" width="110" height="28" rx="3" class="box"/><text x="95" y="66" text-anchor="middle" class="svg-label-sm">ventas 2 TB</text>
+  <rect x="206" y="48" width="110" height="28" rx="3" class="box"/><text x="261" y="66" text-anchor="middle" class="svg-label-sm">países 20 KB</text>
+
+  <path d="M95 80 L130 118" class="ln-ember"/><path d="M95 80 L178 118" class="ln-ember"/><path d="M95 80 L226 118" class="ln-ember"/>
+  <path d="M261 80 L130 118" class="ln-ember"/><path d="M261 80 L178 118" class="ln-ember"/><path d="M261 80 L226 118" class="ln-ember"/>
+
+  <rect x="100" y="122" width="60" height="30" rx="3" class="box-teal"/><text x="130" y="141" text-anchor="middle" class="svg-label-sm">W1</text>
+  <rect x="148" y="122" width="60" height="30" rx="3" class="box-teal"/><text x="178" y="141" text-anchor="middle" class="svg-label-sm">W2</text>
+  <rect x="196" y="122" width="60" height="30" rx="3" class="box-teal"/><text x="226" y="141" text-anchor="middle" class="svg-label-sm">W3</text>
+  <text x="178" y="180" text-anchor="middle" class="svg-label-sm">Se mueven 2 TB por la red</text>
+  <text x="178" y="196" text-anchor="middle" class="svg-label-sm">para cruzarlos con 20 KB.</text>
+  <text x="178" y="212" text-anchor="middle" class="svg-label-sm">Absurdo y lento.</text>
+
+  <line x1="390" y1="28" x2="390" y2="222" class="ln-dash"/>
+
+  <text x="570" y="18" text-anchor="middle" class="svg-title">Broadcast join</text>
+  <text x="570" y="34" text-anchor="middle" class="svg-label-sm">la tabla pequeña se copia a cada worker</text>
+
+  <rect x="516" y="48" width="110" height="28" rx="3" class="box-ember"/><text x="571" y="66" text-anchor="middle" class="svg-label-sm">países 20 KB</text>
+
+  <path d="M540 80 L510 116" class="ln" marker-end="url(#ar8)"/>
+  <path d="M571 80 L571 116" class="ln" marker-end="url(#ar8)"/>
+  <path d="M602 80 L632 116" class="ln" marker-end="url(#ar8)"/>
+  <defs><marker id="ar8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--diag-stroke)" stroke-width="1.3"/></marker></defs>
+
+  <rect x="462" y="120" width="88" height="44" rx="3" class="box-teal"/>
+  <text x="506" y="136" text-anchor="middle" class="svg-label-sm">W1</text>
+  <text x="506" y="152" text-anchor="middle" class="svg-label-sm">ventas + copia</text>
+  <rect x="526" y="120" width="88" height="44" rx="3" class="box-teal"/>
+  <text x="570" y="136" text-anchor="middle" class="svg-label-sm">W2</text>
+  <text x="570" y="152" text-anchor="middle" class="svg-label-sm">ventas + copia</text>
+  <rect x="590" y="120" width="88" height="44" rx="3" class="box-teal"/>
+  <text x="634" y="136" text-anchor="middle" class="svg-label-sm">W3</text>
+  <text x="634" y="152" text-anchor="middle" class="svg-label-sm">ventas + copia</text>
+
+  <text x="570" y="190" text-anchor="middle" class="svg-label-sm">Los 2 TB no se mueven: cada worker</text>
+  <text x="570" y="206" text-anchor="middle" class="svg-label-sm">ya tiene todo lo que necesita.</text>
+  <text x="570" y="222" text-anchor="middle" class="svg-label-sm">Cero shuffle.</text>
+</svg>
+</div>
+<figcaption>Spark elige broadcast automáticamente cuando la tabla pequeña está por debajo de <code>spark.sql.autoBroadcastJoinThreshold</code> (10 MB por defecto; Databricks lo eleva y AQE lo decide en caliente). Puedes forzarlo con <code>broadcast(df)</code>.</figcaption>
+</figure>
+
+<h3>Partition pruning y repartition vs coalesce</h3>
+<p><strong>Partition pruning</strong>: si la tabla está particionada en disco por fecha y filtras por fecha, Spark ni siquiera abre las carpetas de los otros días. Es la optimización más rentable que existe y es gratis si particionaste bien.</p>
+<p><strong><code>repartition(n)</code></strong> cambia el número de particiones haciendo un shuffle completo; sirve para subir el paralelismo o rebalancear. <strong><code>coalesce(n)</code></strong> solo puede reducir, pero fusiona particiones vecinas sin shuffle; sirve para no escribir 2.000 archivos diminutos al final.</p>
+</section>
+
+<!-- ============ 8 ============ -->
+<section id="delta">
+<h2><span class="num">08</span>Delta Lake y el transaction log</h2>
+
+<p><strong>Delta Lake</strong> es el formato de tabla por defecto en Databricks y es el corazón del Lakehouse. En la práctica es: <strong>archivos Parquet normales, más una carpeta oculta con un registro de todo lo que ha pasado</strong>.</p>
+
+<p>Ese registro se llama <code>_delta_log</code>. Cada operación (insertar, borrar, actualizar) escribe un archivo JSON nuevo que dice qué archivos de datos se añadieron y cuáles dejaron de ser válidos. Los archivos viejos no se borran: se marcan como retirados.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Una cuenta bancaria. El banco no guarda solo "tienes $500". Guarda <strong>el historial de movimientos</strong>: depósito de 300, retiro de 50, depósito de 250. Tu saldo actual es la suma del historial. Y por eso puedes pedir el extracto del mes pasado y ver exactamente cuánto tenías entonces. El <code>_delta_log</code> es ese historial de movimientos de la tabla.</p>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 390" role="img" aria-label="Estructura de una tabla Delta con archivos parquet y el transaction log">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">Qué hay dentro de una tabla Delta</text>
+
+  <rect x="24" y="32" width="340" height="230" rx="4" class="box"/>
+  <text x="40" y="54" class="svg-mono">/ventas/</text>
+  <rect x="44" y="64" width="300" height="24" rx="2" class="box-teal"/>
+  <text x="54" y="81" class="svg-mono">part-0001.parquet</text>
+  <text x="300" y="81" class="svg-label-sm">activo</text>
+  <rect x="44" y="92" width="300" height="24" rx="2" class="box-teal"/>
+  <text x="54" y="109" class="svg-mono">part-0002.parquet</text>
+  <text x="300" y="109" class="svg-label-sm">activo</text>
+  <rect x="44" y="120" width="300" height="24" rx="2" class="box"/>
+  <text x="54" y="137" class="svg-mono">part-0003.parquet</text>
+  <text x="294" y="137" class="svg-label-sm">retirado</text>
+  <rect x="44" y="148" width="300" height="24" rx="2" class="box-teal"/>
+  <text x="54" y="165" class="svg-mono">part-0004.parquet</text>
+  <text x="300" y="165" class="svg-label-sm">activo</text>
+
+  <rect x="44" y="182" width="300" height="66" rx="2" class="box-ember"/>
+  <text x="54" y="200" class="svg-mono">_delta_log/</text>
+  <text x="62" y="217" class="svg-mono">000000.json</text>
+  <text x="200" y="217" class="svg-label-sm">CREATE + 3 archivos</text>
+  <text x="62" y="232" class="svg-mono">000001.json</text>
+  <text x="200" y="232" class="svg-label-sm">UPDATE: −0003 +0004</text>
+  <text x="62" y="245" class="svg-mono">000002.json</text>
+  <text x="200" y="245" class="svg-label-sm">MERGE: +0005</text>
+
+  <path d="M370 140 L400 140" class="ln" marker-end="url(#ar9)"/>
+  <defs><marker id="ar9" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,1 L7,4 L0,7" fill="none" stroke="var(--diag-stroke)" stroke-width="1.3"/></marker></defs>
+
+  <rect x="406" y="32" width="330" height="230" rx="4" class="box"/>
+  <text x="422" y="54" class="svg-label">Qué consigue ese log</text>
+  <text x="422" y="78" class="svg-label-sm">ACID — una escritura o se aplica entera o</text>
+  <text x="422" y="92" class="svg-label-sm">no se aplica. Nadie lee datos a medio escribir.</text>
+  <text x="422" y="116" class="svg-label-sm">Time travel — puedes consultar la tabla tal</text>
+  <text x="422" y="130" class="svg-label-sm">como estaba en la versión 1 o el lunes pasado.</text>
+  <text x="422" y="154" class="svg-label-sm">Schema enforcement — rechaza escrituras con</text>
+  <text x="422" y="168" class="svg-label-sm">columnas o tipos que no corresponden.</text>
+  <text x="422" y="192" class="svg-label-sm">Concurrencia — varios escritores a la vez con</text>
+  <text x="422" y="206" class="svg-label-sm">control optimista; el log resuelve conflictos.</text>
+  <text x="422" y="230" class="svg-label-sm">Estadísticas — min, max y nulos por archivo,</text>
+  <text x="422" y="244" class="svg-label-sm">para saltarse archivos enteros al filtrar.</text>
+
+  <!-- time travel -->
+  <rect x="24" y="276" width="712" height="100" rx="4" class="box-teal"/>
+  <text x="40" y="298" class="svg-label">Time travel: el log reconstruye cualquier versión</text>
+  <line x1="60" y1="336" x2="700" y2="336" class="ln"/>
+  <circle cx="110" cy="336" r="6" class="box-ember"/><text x="110" y="358" text-anchor="middle" class="svg-label-sm">v0</text>
+  <circle cx="280" cy="336" r="6" class="box-ember"/><text x="280" y="358" text-anchor="middle" class="svg-label-sm">v1</text>
+  <circle cx="450" cy="336" r="6" class="box-ember"/><text x="450" y="358" text-anchor="middle" class="svg-label-sm">v2</text>
+  <circle cx="620" cy="336" r="6" class="box-ember"/><text x="620" y="358" text-anchor="middle" class="svg-label-sm">v3 (actual)</text>
+  <text x="110" y="320" text-anchor="middle" class="svg-label-sm">create</text>
+  <text x="280" y="320" text-anchor="middle" class="svg-label-sm">update</text>
+  <text x="450" y="320" text-anchor="middle" class="svg-label-sm">merge</text>
+  <text x="620" y="320" text-anchor="middle" class="svg-label-sm">delete</text>
+</svg>
+</div>
+<figcaption>Un lector siempre consulta primero el log para saber qué archivos son válidos ahora mismo. Por eso nunca ve una escritura a medias, y por eso puede pedir una versión anterior.</figcaption>
+</figure>
+
+<h3>ACID, en palabras normales</h3>
+<div class="cards">
+  <div class="card"><h4>Atomicidad</h4><p>Todo o nada. Si el job falla a la mitad de escribir 1.000 filas, no quedan 400 filas sueltas: no queda ninguna.</p></div>
+  <div class="card"><h4>Consistencia</h4><p>La tabla nunca queda en un estado inválido. Las reglas de esquema se respetan siempre.</p></div>
+  <div class="card"><h4>Aislamiento</h4><p>Alguien leyendo mientras tú escribes ve la versión anterior completa, nunca una mezcla de ambas.</p></div>
+  <div class="card"><h4>Durabilidad</h4><p>Una vez confirmada la escritura, está en el storage y sobrevive a caídas de máquinas.</p></div>
+</div>
+
+<h3>Operaciones que debes saber nombrar</h3>
+<pre><code><span class="cmt">-- Time travel: leer el pasado</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> ventas <span class="kw">VERSION AS OF</span> <span class="str">12</span>;
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> ventas <span class="kw">TIMESTAMP AS OF</span> <span class="str">'2026-11-01'</span>;
+
+<span class="cmt">-- Ver todo el historial de la tabla</span>
+<span class="kw">DESCRIBE HISTORY</span> ventas;
+
+<span class="cmt">-- Deshacer un desastre</span>
+<span class="kw">RESTORE TABLE</span> ventas <span class="kw">TO VERSION AS OF</span> <span class="str">11</span>;
+
+<span class="cmt">-- MERGE: upsert. Actualiza lo que existe, inserta lo nuevo.</span>
+<span class="kw">MERGE INTO</span> ventas t
+<span class="kw">USING</span> nuevas s <span class="kw">ON</span> t.id = s.id
+<span class="kw">WHEN MATCHED THEN UPDATE SET</span> *
+<span class="kw">WHEN NOT MATCHED THEN INSERT</span> *;
+
+<span class="cmt">-- Compactar archivos pequeños y ordenar por columna de filtro</span>
+<span class="kw">OPTIMIZE</span> ventas <span class="kw">ZORDER BY</span> (cliente_id);
+
+<span class="cmt">-- Borrar físicamente los archivos retirados de hace +7 días</span>
+<span class="kw">VACUUM</span> ventas <span class="kw">RETAIN</span> <span class="str">168</span> <span class="kw">HOURS</span>;</code></pre>
+
+<div class="answer">
+  <span class="tag">Cuidado con esta</span>
+  <p><strong>"Si haces VACUUM, ¿qué pasa con el time travel?"</strong></p>
+  <p>"Se pierde para las versiones cuyos archivos se eliminaron. <code>VACUUM</code> borra físicamente los archivos de datos que el log marcó como retirados y que superan el periodo de retención, así que después ya no se puede reconstruir aquellas versiones. Por eso el valor por defecto son 7 días y Databricks bloquea retenciones más cortas salvo que desactives la comprobación explícitamente."</p>
+</div>
+
+<h3>Schema evolution vs enforcement</h3>
+<p><strong>Enforcement</strong> es el comportamiento por defecto: si intentas escribir una columna que la tabla no tiene, falla. Eso protege la calidad. <strong>Evolution</strong> es la opción que activas con <code>mergeSchema</code> cuando sí quieres que la tabla acepte la columna nueva. La respuesta madura en entrevista es: enforcement en Silver y Gold, evolution controlada en Bronze.</p>
+</section>
+
+<!-- ============ 9 ============ -->
+<section id="medallion">
+<h2><span class="num">09</span>Arquitectura Medallion</h2>
+
+<p>Es el patrón de diseño que Databricks recomienda y que <strong>aparece en casi toda entrevista</strong>. Los datos pasan por tres capas, y en cada una están más limpios y más listos para usar.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Hacer jugo de naranja. <strong>Bronze</strong> es el costal de naranjas como llegó del camión, con tierra y hojas: no tocas nada, lo guardas tal cual por si acaso. <strong>Silver</strong> son las naranjas lavadas, sin las podridas, peladas y en gajos: útiles para muchas recetas. <strong>Gold</strong> es el vaso de jugo servido y listo para el cliente: hecho para un consumo específico.</p>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 410" role="img" aria-label="Arquitectura medallion con capas bronze, silver y gold">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">Arquitectura Medallion</text>
+
+  <!-- fuentes -->
+  <rect x="20" y="40" width="112" height="150" rx="4" class="box"/>
+  <text x="76" y="60" text-anchor="middle" class="svg-label">FUENTES</text>
+  <rect x="32" y="70" width="88" height="22" rx="2" class="box"/><text x="76" y="85" text-anchor="middle" class="svg-label-sm">base SQL</text>
+  <rect x="32" y="96" width="88" height="22" rx="2" class="box"/><text x="76" y="111" text-anchor="middle" class="svg-label-sm">API REST</text>
+  <rect x="32" y="122" width="88" height="22" rx="2" class="box"/><text x="76" y="137" text-anchor="middle" class="svg-label-sm">Kafka</text>
+  <rect x="32" y="148" width="88" height="22" rx="2" class="box"/><text x="76" y="163" text-anchor="middle" class="svg-label-sm">CSV / logs</text>
+
+  <path d="M136 115 L168 115" class="ln" marker-end="url(#ar10)"/>
+  <defs><marker id="ar10" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,1 L8,4.5 L0,8" fill="none" stroke="var(--diag-stroke)" stroke-width="1.4"/></marker></defs>
+
+  <!-- bronze -->
+  <rect x="172" y="40" width="172" height="150" rx="4" class="box"/>
+  <text x="258" y="62" text-anchor="middle" class="svg-title">BRONZE</text>
+  <text x="258" y="78" text-anchor="middle" class="svg-label-sm">crudo, tal cual llegó</text>
+  <text x="186" y="100" class="svg-label-sm">· append-only, nada se borra</text>
+  <text x="186" y="116" class="svg-label-sm">· todo como string si hace falta</text>
+  <text x="186" y="132" class="svg-label-sm">· se añade fecha de ingesta</text>
+  <text x="186" y="148" class="svg-label-sm">  y nombre del archivo origen</text>
+  <text x="186" y="170" class="svg-label-sm">Es tu red de seguridad: si</text>
+  <text x="186" y="184" class="svg-label-sm">rompes algo, reprocesas de aquí.</text>
+
+  <path d="M348 115 L380 115" class="ln" marker-end="url(#ar10)"/>
+
+  <!-- silver -->
+  <rect x="384" y="40" width="172" height="150" rx="4" class="box-teal"/>
+  <text x="470" y="62" text-anchor="middle" class="svg-title">SILVER</text>
+  <text x="470" y="78" text-anchor="middle" class="svg-label-sm">limpio y conformado</text>
+  <text x="398" y="100" class="svg-label-sm">· tipos correctos</text>
+  <text x="398" y="116" class="svg-label-sm">· duplicados eliminados</text>
+  <text x="398" y="132" class="svg-label-sm">· nulos resueltos, reglas de</text>
+  <text x="398" y="146" class="svg-label-sm">  calidad aplicadas</text>
+  <text x="398" y="162" class="svg-label-sm">· tablas unidas y normalizadas</text>
+  <text x="398" y="184" class="svg-label-sm">La fuente de verdad del negocio.</text>
+
+  <path d="M560 115 L592 115" class="ln" marker-end="url(#ar10)"/>
+
+  <!-- gold -->
+  <rect x="596" y="40" width="144" height="150" rx="4" class="box-ember"/>
+  <text x="668" y="62" text-anchor="middle" class="svg-title">GOLD</text>
+  <text x="668" y="78" text-anchor="middle" class="svg-label-sm">listo para consumir</text>
+  <text x="608" y="100" class="svg-label-sm">· agregado por negocio</text>
+  <text x="608" y="116" class="svg-label-sm">· KPIs y métricas</text>
+  <text x="608" y="132" class="svg-label-sm">· modelo estrella o</text>
+  <text x="608" y="146" class="svg-label-sm">  tabla de features ML</text>
+  <text x="608" y="168" class="svg-label-sm">Una tabla por caso de</text>
+  <text x="608" y="182" class="svg-label-sm">uso concreto.</text>
+
+  <!-- consumidores -->
+  <path d="M668 194 L668 226" class="ln" marker-end="url(#ar10)"/>
+  <rect x="520" y="230" width="220" height="80" rx="4" class="box"/>
+  <text x="630" y="250" text-anchor="middle" class="svg-label">CONSUMO</text>
+  <rect x="534" y="260" width="92" height="20" rx="2" class="box"/><text x="580" y="274" text-anchor="middle" class="svg-label-sm">Power BI</text>
+  <rect x="634" y="260" width="92" height="20" rx="2" class="box"/><text x="680" y="274" text-anchor="middle" class="svg-label-sm">Tableau</text>
+  <rect x="534" y="284" width="92" height="20" rx="2" class="box"/><text x="580" y="298" text-anchor="middle" class="svg-label-sm">modelos ML</text>
+  <rect x="634" y="284" width="92" height="20" rx="2" class="box"/><text x="680" y="298" text-anchor="middle" class="svg-label-sm">apps</text>
+
+  <!-- por que -->
+  <rect x="20" y="230" width="480" height="80" rx="4" class="box"/>
+  <text x="36" y="250" class="svg-label">Por qué tres capas y no una sola transformación</text>
+  <text x="36" y="270" class="svg-label-sm">· Si Gold sale mal, no vuelves a llamar a la API: reprocesas desde Bronze, que ya tienes.</text>
+  <text x="36" y="286" class="svg-label-sm">· Cada capa es un punto de control de calidad, así que los errores se detectan temprano.</text>
+  <text x="36" y="302" class="svg-label-sm">· Silver se reutiliza para muchas tablas Gold distintas, sin repetir la limpieza.</text>
+
+  <rect x="20" y="326" width="720" height="60" rx="4" class="box-teal"/>
+  <text x="36" y="346" class="svg-label">Cómo nombrarlo en la entrevista</text>
+  <text x="36" y="366" class="svg-label-sm">"Ingesta incremental con Auto Loader a Bronze; limpieza y deduplicación con MERGE a Silver; agregaciones</text>
+  <text x="36" y="380" class="svg-label-sm">de negocio a Gold. Todo en Delta, orquestado con Workflows y gobernado con Unity Catalog."</text>
+</svg>
+</div>
+<figcaption>No es obligatorio que sean exactamente tres capas, y conviene decirlo: es un patrón, no un dogma. Lo esencial es separar lo crudo de lo validado y de lo agregado.</figcaption>
+</figure>
+</section>
+
+<!-- ============ 10 ============ -->
+<section id="workflows">
+<h2><span class="num">10</span>Workflows: Jobs con tareas</h2>
+
+<p>Aquí "job" significa lo otro: <strong>una tubería programada</strong>. Un <strong>Databricks Job</strong> (gestionado desde Workflows) es un conjunto de <strong>tasks</strong> con dependencias entre sí, que se ejecuta según un horario o un disparador.</p>
+
+<p>Cada task puede ser un notebook, un script Python, una query SQL, un JAR, una pipeline de DLT o incluso otro job. Las dependencias entre tasks forman — otra vez — un DAG. La diferencia es que este DAG lo dibujas tú, mientras que el de Spark lo deduce el motor.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Es el <strong>plan de un desayuno</strong>. El <em>job</em> es "preparar el desayuno, todos los días a las 7". Las <em>tasks</em> son "hacer café", "tostar el pan", "freír huevos", "servir". Café y tostadas van en paralelo, pero "servir" espera a que las tres estén listas. Si los huevos se queman, el job marca fallo en esa task y tú decides: ¿se reintenta?, ¿se sirve sin huevos?, ¿se cancela todo?</p>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 400" role="img" aria-label="DAG de un Databricks Job con tasks en paralelo y dependencias">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">Un Job con 7 tasks</text>
+  <text x="380" y="36" text-anchor="middle" class="svg-label-sm">ETL diario · trigger: cron 0 6 * * * · job cluster compartido</text>
+
+  <!-- task 1 -->
+  <rect x="30" y="140" width="130" height="54" rx="4" class="box-teal"/>
+  <text x="95" y="160" text-anchor="middle" class="svg-label">1 · ingest_api</text>
+  <text x="95" y="175" text-anchor="middle" class="svg-label-sm">notebook</text>
+  <text x="95" y="188" text-anchor="middle" class="svg-label-sm">retries: 3</text>
+
+  <path d="M164 150 L212 108" class="ln" marker-end="url(#ar11)"/>
+  <path d="M164 184 L212 226" class="ln" marker-end="url(#ar11)"/>
+  <defs><marker id="ar11" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,1 L8,4.5 L0,8" fill="none" stroke="var(--diag-stroke)" stroke-width="1.4"/></marker></defs>
+
+  <!-- paralelo -->
+  <rect x="216" y="70" width="130" height="54" rx="4" class="box"/>
+  <text x="281" y="90" text-anchor="middle" class="svg-label">2 · bronze_ventas</text>
+  <text x="281" y="105" text-anchor="middle" class="svg-label-sm">notebook</text>
+  <text x="281" y="118" text-anchor="middle" class="svg-label-sm">paralelo con 3</text>
+
+  <rect x="216" y="210" width="130" height="54" rx="4" class="box"/>
+  <text x="281" y="230" text-anchor="middle" class="svg-label">3 · bronze_clientes</text>
+  <text x="281" y="245" text-anchor="middle" class="svg-label-sm">notebook</text>
+  <text x="281" y="258" text-anchor="middle" class="svg-label-sm">paralelo con 2</text>
+
+  <path d="M350 97 L398 140" class="ln" marker-end="url(#ar11)"/>
+  <path d="M350 237 L398 194" class="ln" marker-end="url(#ar11)"/>
+
+  <!-- silver -->
+  <rect x="402" y="140" width="130" height="54" rx="4" class="box-ember"/>
+  <text x="467" y="160" text-anchor="middle" class="svg-label">4 · silver_merge</text>
+  <text x="467" y="175" text-anchor="middle" class="svg-label-sm">espera a 2 y 3</text>
+  <text x="467" y="188" text-anchor="middle" class="svg-label-sm">SQL task</text>
+
+  <path d="M536 150 L584 108" class="ln" marker-end="url(#ar11)"/>
+  <path d="M536 184 L584 226" class="ln" marker-end="url(#ar11)"/>
+
+  <rect x="588" y="70" width="142" height="54" rx="4" class="box"/>
+  <text x="659" y="90" text-anchor="middle" class="svg-label">5 · gold_kpis</text>
+  <text x="659" y="105" text-anchor="middle" class="svg-label-sm">SQL task</text>
+  <text x="659" y="118" text-anchor="middle" class="svg-label-sm">timeout: 30 min</text>
+
+  <rect x="588" y="210" width="142" height="54" rx="4" class="box"/>
+  <text x="659" y="230" text-anchor="middle" class="svg-label">6 · calidad_datos</text>
+  <text x="659" y="245" text-anchor="middle" class="svg-label-sm">notebook de tests</text>
+  <text x="659" y="258" text-anchor="middle" class="svg-label-sm">on_failure: alerta</text>
+
+  <path d="M659 128 L659 150 L420 150" class="ln-dash"/>
+
+  <!-- task 7 -->
+  <path d="M659 268 L659 300" class="ln" marker-end="url(#ar11)"/>
+  <rect x="560" y="304" width="198" height="46" rx="4" class="box-teal"/>
+  <text x="659" y="324" text-anchor="middle" class="svg-label">7 · notificar_equipo</text>
+  <text x="659" y="340" text-anchor="middle" class="svg-label-sm">corre aunque haya fallos</text>
+
+  <!-- leyenda -->
+  <rect x="30" y="286" width="420" height="92" rx="4" class="box"/>
+  <text x="46" y="306" class="svg-label">Lo que configuras en cada task</text>
+  <text x="46" y="326" class="svg-label-sm">· Depends on: qué tasks deben terminar antes.</text>
+  <text x="46" y="342" class="svg-label-sm">· Retries y retry interval: reintentos ante fallos transitorios.</text>
+  <text x="46" y="358" class="svg-label-sm">· Compute: job cluster nuevo, compartido o serverless.</text>
+  <text x="46" y="374" class="svg-label-sm">· Parámetros, timeout, y notificaciones por éxito o fallo.</text>
+</svg>
+</div>
+<figcaption>Las tasks 2 y 3 no dependen entre sí, así que Databricks las lanza a la vez. La task 4 es un punto de encuentro: no arranca hasta que ambas terminen con éxito.</figcaption>
+</figure>
+
+<h3>Lo que conviene mencionar</h3>
+<ul>
+<li><strong>Triggers</strong>: por horario (cron), continuo, por llegada de archivos (<em>file arrival</em>), o manual vía API.</li>
+<li><strong>Reintentos</strong>: configurables por task. Clave para fallos de red intermitentes.</li>
+<li><strong>Repair run</strong>: si falla la task 5 de 7, al reparar solo se reejecutan la 5 y las que dependen de ella, no todo el job. Mencionar esto suma mucho.</li>
+<li><strong>Cluster compartido entre tasks</strong>: reutilizar el mismo job cluster para varias tasks evita pagar 7 arranques.</li>
+<li><strong>Databricks Asset Bundles</strong>: definir jobs como código YAML versionado en Git, para desplegar la misma pipeline en dev, staging y prod. Es la respuesta correcta a "¿cómo haces CI/CD aquí?".</li>
+</ul>
+
+<div class="answer">
+  <span class="tag">Diferencia que debes tener lista</span>
+  <p><strong>"Diferencia entre un Spark job y un Databricks Job."</strong></p>
+  <p>"Un Spark job es una unidad interna del motor: lo genera cada acción y se descompone en stages y tasks. Un Databricks Job es una unidad de orquestación: un conjunto de tasks con dependencias y un trigger, que yo defino. Un solo Databricks Job puede generar cientos de Spark jobs al ejecutarse."</p>
+</div>
+</section>
+
+<!-- ============ 11 ============ -->
+<section id="unity">
+<h2><span class="num">11</span>Unity Catalog</h2>
+
+<p><strong>Unity Catalog</strong> es el sistema de gobierno: decide <strong>quién puede ver y hacer qué</strong>, y lleva el registro de de dónde viene cada dato. Antes cada workspace tenía su propio metastore aislado; Unity Catalog es uno solo para toda la cuenta.</p>
+
+<p>Su estructura es de tres niveles, y esto se pregunta tal cual:</p>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 330" role="img" aria-label="Jerarquía de Unity Catalog: metastore, catálogo, esquema y tabla">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">Namespace de tres niveles</text>
+  <text x="380" y="38" text-anchor="middle" class="svg-mono">catalogo.esquema.tabla</text>
+
+  <rect x="24" y="54" width="712" height="42" rx="4" class="box"/>
+  <text x="40" y="72" class="svg-title">METASTORE</text>
+  <text x="40" y="88" class="svg-label-sm">Uno por región. Contenedor de todo. Lo administra el account admin, no el workspace.</text>
+
+  <path d="M120 98 L120 112" class="ln"/><path d="M380 98 L380 112" class="ln"/><path d="M640 98 L640 112" class="ln"/>
+
+  <rect x="24" y="116" width="224" height="44" rx="4" class="box-ember"/>
+  <text x="136" y="136" text-anchor="middle" class="svg-label">CATALOG · prod</text>
+  <text x="136" y="152" text-anchor="middle" class="svg-label-sm">suele separar entornos</text>
+
+  <rect x="268" y="116" width="224" height="44" rx="4" class="box"/>
+  <text x="380" y="136" text-anchor="middle" class="svg-label">CATALOG · dev</text>
+  <text x="380" y="152" text-anchor="middle" class="svg-label-sm">o unidades de negocio</text>
+
+  <rect x="512" y="116" width="224" height="44" rx="4" class="box"/>
+  <text x="624" y="136" text-anchor="middle" class="svg-label">CATALOG · sandbox</text>
+  <text x="624" y="152" text-anchor="middle" class="svg-label-sm">pruebas</text>
+
+  <path d="M80 162 L80 176" class="ln"/><path d="M196 162 L196 176" class="ln"/>
+
+  <rect x="24" y="180" width="108" height="42" rx="4" class="box-teal"/>
+  <text x="78" y="198" text-anchor="middle" class="svg-label">SCHEMA</text>
+  <text x="78" y="213" text-anchor="middle" class="svg-label-sm">ventas</text>
+
+  <rect x="142" y="180" width="106" height="42" rx="4" class="box-teal"/>
+  <text x="195" y="198" text-anchor="middle" class="svg-label">SCHEMA</text>
+  <text x="195" y="213" text-anchor="middle" class="svg-label-sm">marketing</text>
+
+  <path d="M78 224 L78 238" class="ln"/>
+
+  <rect x="24" y="242" width="108" height="26" rx="3" class="box"/>
+  <text x="78" y="259" text-anchor="middle" class="svg-label-sm">tabla pedidos</text>
+  <rect x="24" y="272" width="108" height="26" rx="3" class="box"/>
+  <text x="78" y="289" text-anchor="middle" class="svg-label-sm">vista resumen</text>
+  <rect x="24" y="302" width="108" height="24" rx="3" class="box"/>
+  <text x="78" y="318" text-anchor="middle" class="svg-label-sm">volume archivos</text>
+
+  <rect x="268" y="180" width="468" height="146" rx="4" class="box"/>
+  <text x="284" y="200" class="svg-label">Qué objetos gobierna y qué resuelve</text>
+  <text x="284" y="222" class="svg-label-sm">Tablas (managed o external), vistas, volumes para archivos no tabulares,</text>
+  <text x="284" y="236" class="svg-label-sm">funciones, y modelos de ML registrados.</text>
+  <text x="284" y="260" class="svg-label-sm">· Permisos con GRANT estándar de SQL, heredados hacia abajo en el árbol.</text>
+  <text x="284" y="276" class="svg-label-sm">· Linaje automático a nivel de tabla y de columna: quién usa qué y de dónde viene.</text>
+  <text x="284" y="292" class="svg-label-sm">· Audit log de cada acceso.</text>
+  <text x="284" y="308" class="svg-label-sm">· Delta Sharing: compartir tablas fuera de la organización sin copiarlas.</text>
+  <text x="284" y="322" class="svg-label-sm">· Row filters y column masks para datos sensibles.</text>
+</svg>
+</div>
+<figcaption>La consulta <code>SELECT * FROM prod.ventas.pedidos</code> es exactamente este árbol recorrido de arriba abajo. Antes de Unity Catalog solo había dos niveles (<code>database.table</code>).</figcaption>
+</figure>
+
+<h3>Managed vs External</h3>
+<p>Una tabla <strong>managed</strong> la gestiona Databricks por completo: si haces <code>DROP TABLE</code>, los archivos se borran. Una tabla <strong>external</strong> apunta a una ruta que tú controlas: al hacer <code>DROP</code> desaparece el registro pero los archivos siguen ahí. Managed es lo recomendado por defecto porque permite optimizaciones automáticas; external se usa cuando otros sistemas fuera de Databricks también leen esos archivos.</p>
+</section>
+
+<!-- ============ 12 ============ -->
+<section id="streaming">
+<h2><span class="num">12</span>Auto Loader y Structured Streaming</h2>
+
+<p><strong>Structured Streaming</strong> es la forma de Spark de procesar datos que llegan continuamente. La idea central es elegante: <strong>tratas el stream como una tabla que nunca deja de crecer</strong>. Escribes el mismo código que para un DataFrame normal, y Spark lo ejecuta en micro-lotes a medida que llegan datos nuevos.</p>
+
+<p><strong>Auto Loader</strong> (<code>cloudFiles</code>) es la herramienta para ingerir archivos que van cayendo en un directorio de la nube. Su truco: lleva su propio registro de qué archivos ya procesó, así que <strong>nunca procesa dos veces el mismo archivo ni se le escapa ninguno</strong>, sin que tú tengas que listar el directorio entero cada vez.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>Un <strong>buzón de correo</strong>. La versión ingenua sería vaciar el buzón entero cada mañana y revisar carta por carta cuáles ya leíste — carísimo cuando hay un millón de cartas. Auto Loader en cambio <strong>apunta en una libreta</strong> qué cartas ya abrió, y el cartero le avisa cuando llega una nueva. Solo toca lo nuevo.</p>
+</div>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 290" role="img" aria-label="Flujo de Auto Loader con checkpoint y escritura incremental a Delta">
+  <text x="380" y="18" text-anchor="middle" class="svg-title">Auto Loader: ingesta incremental</text>
+
+  <rect x="24" y="40" width="150" height="130" rx="4" class="box"/>
+  <text x="99" y="60" text-anchor="middle" class="svg-label">Landing zone</text>
+  <rect x="38" y="70" width="122" height="20" rx="2" class="box"/><text x="99" y="84" text-anchor="middle" class="svg-label-sm">dia1.json ✓ leído</text>
+  <rect x="38" y="94" width="122" height="20" rx="2" class="box"/><text x="99" y="108" text-anchor="middle" class="svg-label-sm">dia2.json ✓ leído</text>
+  <rect x="38" y="118" width="122" height="20" rx="2" class="box-ember"/><text x="99" y="132" text-anchor="middle" class="svg-label-sm">dia3.json NUEVO</text>
+  <rect x="38" y="142" width="122" height="20" rx="2" class="box-ember"/><text x="99" y="156" text-anchor="middle" class="svg-label-sm">dia4.json NUEVO</text>
+
+  <path d="M178 105 L218 105" class="ln-ember" marker-end="url(#ar12)"/>
+  <text x="198" y="96" text-anchor="middle" class="svg-label-sm">solo</text>
+  <text x="198" y="124" text-anchor="middle" class="svg-label-sm">lo nuevo</text>
+  <defs><marker id="ar12" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,1 L8,4.5 L0,8" fill="none" stroke="var(--ember)" stroke-width="1.6"/></marker></defs>
+
+  <rect x="222" y="60" width="180" height="90" rx="4" class="box-teal"/>
+  <text x="312" y="82" text-anchor="middle" class="svg-label">Auto Loader</text>
+  <text x="312" y="100" text-anchor="middle" class="svg-label-sm">cloudFiles</text>
+  <text x="312" y="118" text-anchor="middle" class="svg-label-sm">infiere esquema,</text>
+  <text x="312" y="134" text-anchor="middle" class="svg-label-sm">detecta columnas nuevas</text>
+
+  <path d="M312 154 L312 188" class="ln" marker-end="url(#ar12b)"/>
+  <rect x="222" y="192" width="180" height="56" rx="4" class="box"/>
+  <text x="312" y="212" text-anchor="middle" class="svg-label">Checkpoint</text>
+  <text x="312" y="228" text-anchor="middle" class="svg-label-sm">la libreta: qué archivos</text>
+  <text x="312" y="242" text-anchor="middle" class="svg-label-sm">ya se procesaron</text>
+  <defs><marker id="ar12b" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,1 L8,4.5 L0,8" fill="none" stroke="var(--diag-stroke)" stroke-width="1.4"/></marker></defs>
+
+  <path d="M406 105 L446 105" class="ln" marker-end="url(#ar12b)"/>
+
+  <rect x="450" y="60" width="286" height="90" rx="4" class="box-ember"/>
+  <text x="593" y="82" text-anchor="middle" class="svg-label">Tabla Bronze (Delta)</text>
+  <text x="593" y="102" text-anchor="middle" class="svg-label-sm">append exactly-once, gracias al checkpoint</text>
+  <text x="593" y="122" text-anchor="middle" class="svg-label-sm">Si el job muere a mitad, al reiniciar retoma</text>
+  <text x="593" y="138" text-anchor="middle" class="svg-label-sm">exactamente donde quedó. No duplica nada.</text>
+
+  <rect x="450" y="192" width="286" height="56" rx="4" class="box"/>
+  <text x="466" y="212" class="svg-label-sm">Trigger availableNow: procesa todo lo pendiente</text>
+  <text x="466" y="228" class="svg-label-sm">y se apaga. Da streaming incremental con costo</text>
+  <text x="466" y="244" class="svg-label-sm">de batch — lo más usado en producción.</text>
+</svg>
+</div>
+<figcaption>El <strong>checkpoint</strong> es la pieza que hace posible la garantía exactly-once. Si lo borras, el stream vuelve a procesar desde cero.</figcaption>
+</figure>
+
+<pre><code>(spark.readStream
+  .format(<span class="str">"cloudFiles"</span>)
+  .option(<span class="str">"cloudFiles.format"</span>, <span class="str">"json"</span>)
+  .option(<span class="str">"cloudFiles.schemaLocation"</span>, <span class="str">"/chk/ventas/schema"</span>)
+  .load(<span class="str">"/landing/ventas/"</span>)
+ .writeStream
+  .option(<span class="str">"checkpointLocation"</span>, <span class="str">"/chk/ventas"</span>)
+  .trigger(availableNow=<span class="kw">True</span>)   <span class="cmt"># procesa lo pendiente y termina</span>
+  .toTable(<span class="str">"prod.bronze.ventas"</span>))</code></pre>
+
+<h3>Watermark, en una frase</h3>
+<p>En streaming los datos llegan tarde y desordenados. Un <strong>watermark</strong> le dice a Spark cuánto esperar por datos atrasados antes de cerrar una ventana de tiempo y liberar memoria. Sin watermark, el estado crece sin límite y el job acaba cayéndose.</p>
+</section>
+
+<!-- ============ 13 ============ -->
+<section id="dlt">
+<h2><span class="num">13</span>Delta Live Tables</h2>
+
+<p><strong>DLT</strong> (hoy también llamado Lakeflow Declarative Pipelines) es una forma <strong>declarativa</strong> de escribir pipelines. En vez de decir <em>cómo</em> hacer cada paso en qué orden, declaras <em>qué</em> tabla quieres y de qué depende. DLT deduce el orden, gestiona los checkpoints, maneja los reintentos y vigila la calidad.</p>
+
+<div class="analogy">
+  <span class="tag">Analogía</span>
+  <p>La diferencia entre <strong>conducir tú mismo</strong> y <strong>pedir un taxi</strong>. Conduciendo (Workflows) decides cada giro: primero esta calle, luego aquella. Con el taxi (DLT) solo dices el destino y el conductor calcula la ruta, esquiva el tráfico y se encarga de los imprevistos. Pierdes control fino; ganas que no tengas que pensar en el camino.</p>
+</div>
+
+<p>Su rasgo distintivo son las <strong>expectations</strong>: reglas de calidad declaradas en la propia definición de la tabla, con tres comportamientos posibles ante una fila mala.</p>
+
+<pre><code><span class="kw">import</span> dlt
+<span class="kw">from</span> pyspark.sql.functions <span class="kw">import</span> col
+
+@dlt.table(comment=<span class="str">"Ventas limpias"</span>)
+@dlt.expect(<span class="str">"total_positivo"</span>, <span class="str">"total &gt; 0"</span>)                <span class="cmt"># avisa y deja pasar</span>
+@dlt.expect_or_drop(<span class="str">"id_presente"</span>, <span class="str">"id IS NOT NULL"</span>)     <span class="cmt"># descarta la fila</span>
+@dlt.expect_or_fail(<span class="str">"moneda_valida"</span>, <span class="str">"moneda IN ('COP','USD')"</span>)  <span class="cmt"># detiene todo</span>
+<span class="kw">def</span> silver_ventas():
+    <span class="kw">return</span> dlt.read_stream(<span class="str">"bronze_ventas"</span>).filter(col(<span class="str">"anio"</span>) &gt;= <span class="str">2025</span>)</code></pre>
+
+<div class="tbl-wrap">
+<table>
+<thead><tr><th></th><th>Workflows</th><th>Delta Live Tables</th></tr></thead>
+<tbody>
+<tr><td>Estilo</td><td>Imperativo: tú defines el orden.</td><td>Declarativo: DLT deduce el orden.</td></tr>
+<tr><td>Calidad</td><td>La programas tú con tests.</td><td>Expectations integradas, con métricas.</td></tr>
+<tr><td>Checkpoints</td><td>Los gestionas a mano.</td><td>Automáticos.</td></tr>
+<tr><td>Flexibilidad</td><td>Total: cualquier código, cualquier task.</td><td>Limitada a pipelines de tablas.</td></tr>
+<tr><td>Cuándo</td><td>Orquestación general, pasos heterogéneos.</td><td>Pipelines ETL de Bronze a Gold.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ============ 14 ============ -->
+<section id="performance">
+<h2><span class="num">14</span>Rendimiento y optimización</h2>
+
+<p>Esta sección es la que separa a un candidato junior de uno senior. Si te preguntan "tu job tarda 4 horas, ¿qué haces?", esto es lo que debes recorrer.</p>
+
+<h3>El problema de los archivos pequeños</h3>
+<p>Si una tabla tiene 100.000 archivos de 1 MB en vez de 1.000 de 100 MB, Spark pasa más tiempo abriendo archivos que leyendo datos. Se arregla con <code>OPTIMIZE</code>, que los compacta, o dejando que Databricks lo haga solo con <em>auto-optimize</em> y <em>predictive optimization</em>.</p>
+
+<h3>Z-Ordering y Liquid Clustering</h3>
+<p><strong>Z-Order</strong> reorganiza físicamente las filas para que los valores parecidos de una columna queden juntos en los mismos archivos. Así, al filtrar por esa columna, Spark puede saltarse archivos enteros usando las estadísticas del log (<em>data skipping</em>). Lo eliges para las columnas por las que más filtras.</p>
+<p><strong>Liquid Clustering</strong> es el sucesor: hace lo mismo pero puedes cambiar las columnas de clustering sin reescribir la tabla, y maneja el skew mucho mejor. Mencionarlo como la recomendación actual frente a particionado + Z-Order demuestra que estás al día.</p>
+
+<figure>
+<div class="diagram">
+<svg viewBox="0 0 760 230" role="img" aria-label="Data skipping gracias al Z-ordering">
+  <text x="190" y="18" text-anchor="middle" class="svg-title">Sin Z-Order</text>
+  <text x="570" y="18" text-anchor="middle" class="svg-title">Con Z-Order por fecha</text>
+  <text x="380" y="214" text-anchor="middle" class="svg-label-sm">Consulta: WHERE fecha = '2026-03-15'</text>
+
+  <g>
+    <rect x="36" y="40" width="68" height="46" rx="3" class="box-ember"/>
+    <text x="70" y="60" text-anchor="middle" class="svg-label-sm">file 1</text>
+    <text x="70" y="76" text-anchor="middle" class="svg-label-sm">ene–dic</text>
+    <rect x="112" y="40" width="68" height="46" rx="3" class="box-ember"/>
+    <text x="146" y="60" text-anchor="middle" class="svg-label-sm">file 2</text>
+    <text x="146" y="76" text-anchor="middle" class="svg-label-sm">ene–dic</text>
+    <rect x="188" y="40" width="68" height="46" rx="3" class="box-ember"/>
+    <text x="222" y="60" text-anchor="middle" class="svg-label-sm">file 3</text>
+    <text x="222" y="76" text-anchor="middle" class="svg-label-sm">ene–dic</text>
+    <rect x="264" y="40" width="68" height="46" rx="3" class="box-ember"/>
+    <text x="298" y="60" text-anchor="middle" class="svg-label-sm">file 4</text>
+    <text x="298" y="76" text-anchor="middle" class="svg-label-sm">ene–dic</text>
+  </g>
+  <text x="190" y="112" text-anchor="middle" class="svg-label-sm">Marzo está disperso en los 4 archivos.</text>
+  <text x="190" y="132" text-anchor="middle" class="svg-label">Hay que leer el 100%.</text>
+  <text x="190" y="160" text-anchor="middle" class="svg-label-sm">Las estadísticas min/max de cada archivo</text>
+  <text x="190" y="176" text-anchor="middle" class="svg-label-sm">abarcan todo el año, así que no sirven</text>
+  <text x="190" y="192" text-anchor="middle" class="svg-label-sm">para descartar nada.</text>
+
+  <line x1="390" y1="34" x2="390" y2="198" class="ln-dash"/>
+
+  <g>
+    <rect x="416" y="40" width="68" height="46" rx="3" class="box"/>
+    <text x="450" y="60" text-anchor="middle" class="svg-label-sm">file 1</text>
+    <text x="450" y="76" text-anchor="middle" class="svg-label-sm">ene–feb</text>
+    <rect x="492" y="40" width="68" height="46" rx="3" class="box-ember"/>
+    <text x="526" y="60" text-anchor="middle" class="svg-label-sm">file 2</text>
+    <text x="526" y="76" text-anchor="middle" class="svg-label-sm">mar–abr</text>
+    <rect x="568" y="40" width="68" height="46" rx="3" class="box"/>
+    <text x="602" y="60" text-anchor="middle" class="svg-label-sm">file 3</text>
+    <text x="602" y="76" text-anchor="middle" class="svg-label-sm">may–ago</text>
+    <rect x="644" y="40" width="68" height="46" rx="3" class="box"/>
+    <text x="678" y="60" text-anchor="middle" class="svg-label-sm">file 4</text>
+    <text x="678" y="76" text-anchor="middle" class="svg-label-sm">sep–dic</text>
+  </g>
+  <text x="570" y="112" text-anchor="middle" class="svg-label-sm">Marzo solo puede estar en file 2.</text>
+  <text x="570" y="132" text-anchor="middle" class="svg-label">Se lee el 25%.</text>
+  <text x="570" y="160" text-anchor="middle" class="svg-label-sm">El log sabe que file 1 llega hasta febrero,</text>
+  <text x="570" y="176" text-anchor="middle" class="svg-label-sm">así que ni lo abre. Eso es data skipping,</text>
+  <text x="570" y="192" text-anchor="middle" class="svg-label-sm">y escala a miles de archivos.</text>
+</svg>
+</div>
+<figcaption>El data skipping funciona porque el <code>_delta_log</code> guarda el mínimo y el máximo de cada columna por archivo. Z-Order hace que esos rangos sean estrechos y por tanto útiles.</figcaption>
+</figure>
+
+<h3>Caching</h3>
+<p><code>df.cache()</code> guarda un DataFrame en memoria para reutilizarlo. Útil cuando vas a usar el mismo resultado intermedio varias veces, por ejemplo en un bucle de entrenamiento. Pero ocupa memoria que las tasks necesitan, así que cachear por reflejo es un antipatrón: solo cachea lo que de verdad se reutiliza, y libéralo con <code>unpersist()</code>.</p>
+
+<h3>Photon</h3>
+<p><strong>Photon</strong> es el motor de ejecución vectorizado de Databricks, reescrito en C++. Acelera consultas SQL y operaciones de DataFrame sin cambiar tu código: lo activas y ya. Cobra más DBUs por hora, pero si la consulta termina en la mitad del tiempo, sale más barato en total. Brilla en agregaciones y joins sobre Delta; no ayuda en UDFs de Python, que caen de vuelta al motor normal.</p>
+
+<h3>Evita las UDFs de Python</h3>
+<p>Una UDF de Python obliga a Spark a sacar cada fila de la JVM, pasarla a un proceso Python, calcular y devolverla. Eso es lentísimo y ciego para el optimizador. El orden de preferencia es: <strong>funciones nativas de Spark</strong> primero; si no existe lo que necesitas, una <strong>Pandas UDF</strong> (vectorizada, procesa lotes); y solo como último recurso una UDF de Python fila a fila.</p>
+
+<h3>Checklist mental para "mi job está lento"</h3>
+<ol>
+<li>Abrir la Spark UI y encontrar el stage que consume el tiempo.</li>
+<li>Mirar la distribución de duración de las tasks: si una domina, es <strong>skew</strong>.</li>
+<li>Contar los shuffles: ¿se puede convertir algún join en broadcast?</li>
+<li>Revisar el tamaño y número de archivos: ¿hace falta <code>OPTIMIZE</code>?</li>
+<li>Comprobar que los filtros se empujan a la lectura y que hay partition pruning.</li>
+<li>Verificar que no hay UDFs de Python en el camino caliente.</li>
+<li>Comprobar spill a disco en la UI: si lo hay, faltan particiones o memoria.</li>
+<li>Solo al final: agrandar el cluster. Escalar hardware antes de arreglar el plan es caro e inútil.</li>
+</ol>
+</section>
+
+<!-- ============ 15 ============ -->
+<section id="preguntas">
+<h2><span class="num">15</span>30 preguntas de entrevista</h2>
+
+<h3>Fundamentos</h3>
+<div class="qa"><p class="q">1. ¿Qué es un Lakehouse y qué problema resuelve?</p><p class="a">Combina el storage barato y flexible del lake con las garantías y el rendimiento del warehouse. <strong>Resuelve la duplicación</strong>: ya no mantienes una copia para BI y otra para ML.</p></div>
+<div class="qa"><p class="q">2. Control plane vs data plane.</p><p class="a">Control plane en la cuenta de Databricks (UI, scheduler, metadatos). Data plane en tu cuenta cloud (compute y storage). <strong>Tus datos nunca salen de tu cuenta.</strong></p></div>
+<div class="qa"><p class="q">3. ¿Qué es un DBU?</p><p class="a">La unidad de consumo con la que Databricks factura el procesamiento. Tu costo total son DBUs + las VMs que te cobra el proveedor cloud aparte.</p></div>
+
+<h3>Spark</h3>
+<div class="qa"><p class="q">4. Transformación vs acción.</p><p class="a">La transformación solo describe y no ejecuta nada (lazy). La acción pide un resultado y dispara la ejecución de todo el plan acumulado.</p></div>
+<div class="qa"><p class="q">5. ¿Por qué Spark es perezoso?</p><p class="a">Para ver el plan completo antes de ejecutar y poder optimizarlo: empujar filtros a la lectura, podar columnas, reordenar joins y fusionar operaciones narrow en un solo paso.</p></div>
+<div class="qa"><p class="q">6. Narrow vs wide.</p><p class="a">Narrow: cada partición se resuelve sola, sin red. Wide: hay que redistribuir datos entre workers, lo que genera un <strong>shuffle</strong> y corta el stage.</p></div>
+<div class="qa"><p class="q">7. ¿Qué es un DAG y para qué sirve?</p><p class="a">El grafo de operaciones a ejecutar. Permite paralelizar lo independiente, optimizar antes de correr, y recuperarse de fallos recalculando solo la partición perdida vía lineage.</p></div>
+<div class="qa"><p class="q">8. Job, stage y task.</p><p class="a">Job = una acción. Stage = trozo sin shuffle (shuffles + 1). Task = el stage aplicado a una partición. La task es la unidad real que corre en un slot.</p></div>
+<div class="qa"><p class="q">9. ¿Cuántas tasks corren a la vez?</p><p class="a">Tantas como cores totales tengan los workers. Es el paralelismo máximo del cluster.</p></div>
+<div class="qa"><p class="q">10. ¿Qué hace el driver?</p><p class="a">Ejecuta tu código principal, construye el DAG y el plan, programa las tasks en los executors y recoge los resultados. Hay uno solo y es un punto único de fallo.</p></div>
+<div class="qa"><p class="q">11. RDD vs DataFrame.</p><p class="a">RDD es bajo nivel, sin esquema y sin optimización de Catalyst. DataFrame es una tabla distribuida tipada que sí se optimiza. Usa DataFrame salvo necesidad muy específica.</p></div>
+<div class="qa"><p class="q">12. ¿Qué es Catalyst?</p><p class="a">El optimizador de consultas: reescribe tu plan lógico en uno equivalente más eficiente y genera el plan físico.</p></div>
+<div class="qa"><p class="q">13. ¿Qué es AQE?</p><p class="a">Adaptive Query Execution: reoptimiza el plan durante la ejecución usando estadísticas reales. Fusiona particiones pequeñas, cambia estrategia de join y divide particiones sesgadas.</p></div>
+<div class="qa"><p class="q">14. repartition vs coalesce.</p><p class="a">repartition hace shuffle completo y puede subir o bajar el número. coalesce solo reduce, fusionando sin shuffle. coalesce antes de escribir, repartition para rebalancear.</p></div>
+<div class="qa"><p class="q">15. cache vs persist.</p><p class="a">cache es persist con el nivel por defecto (memoria y disco). persist te deja elegir el nivel de almacenamiento.</p></div>
+
+<h3>Delta Lake</h3>
+<div class="qa"><p class="q">16. ¿Qué es Delta Lake?</p><p class="a">Una capa de almacenamiento sobre Parquet que añade un transaction log, dando ACID, time travel, enforcement de esquema y estadísticas para data skipping.</p></div>
+<div class="qa"><p class="q">17. ¿Cómo consigue ACID?</p><p class="a">Con el <code>_delta_log</code>: cada commit es un archivo JSON atómico que declara qué archivos están activos. Los lectores consultan el log, así que nunca ven escrituras a medias.</p></div>
+<div class="qa"><p class="q">18. Explica time travel.</p><p class="a">Como el log guarda el historial completo, puedes reconstruir la tabla en cualquier versión o momento: <code>VERSION AS OF</code> o <code>TIMESTAMP AS OF</code>. Sirve para auditoría, reproducibilidad y para deshacer errores.</p></div>
+<div class="qa"><p class="q">19. ¿Qué hace OPTIMIZE?</p><p class="a">Compacta muchos archivos pequeños en pocos grandes. Con <code>ZORDER BY</code> además coloca juntas las filas con valores parecidos para mejorar el data skipping.</p></div>
+<div class="qa"><p class="q">20. ¿Qué hace VACUUM y qué riesgo tiene?</p><p class="a">Borra físicamente los archivos retirados más antiguos que el periodo de retención. El riesgo: pierdes el time travel a esas versiones.</p></div>
+<div class="qa"><p class="q">21. ¿Para qué sirve MERGE?</p><p class="a">Upsert en una sola operación atómica: actualiza las filas que coinciden, inserta las nuevas y opcionalmente borra. Es la base de las cargas incrementales y de SCD tipo 2.</p></div>
+<div class="qa"><p class="q">22. Managed vs external.</p><p class="a">En managed, el DROP borra los datos. En external, solo borra el registro del catálogo y los archivos quedan. Managed por defecto; external cuando otros sistemas leen esos archivos.</p></div>
+<div class="qa"><p class="q">23. Schema enforcement vs evolution.</p><p class="a">Enforcement rechaza escrituras que no cuadran con el esquema; es el default y protege la calidad. Evolution (<code>mergeSchema</code>) permite añadir columnas nuevas a propósito.</p></div>
+
+<h3>Arquitectura y operación</h3>
+<div class="qa"><p class="q">24. Explica la arquitectura medallion.</p><p class="a">Bronze crudo e inmutable, Silver limpio y conformado, Gold agregado para consumo. Permite reprocesar desde Bronze y pone puntos de control de calidad entre capas.</p></div>
+<div class="qa"><p class="q">25. Job cluster vs all-purpose.</p><p class="a">Job cluster nace y muere con el job: más barato y correcto para producción. All-purpose para desarrollo interactivo compartido.</p></div>
+<div class="qa"><p class="q">26. ¿Qué es Unity Catalog?</p><p class="a">El gobierno centralizado: namespace de tres niveles (catálogo, esquema, objeto), permisos SQL heredados, linaje automático a nivel de columna, auditoría y Delta Sharing.</p></div>
+<div class="qa"><p class="q">27. ¿Qué es Auto Loader y por qué no un listado del directorio?</p><p class="a">Ingesta incremental de archivos con checkpoint propio, que garantiza exactly-once sin listar todo el directorio en cada corrida. En directorios con millones de archivos, listar es inviable.</p></div>
+<div class="qa"><p class="q">28. Workflows vs DLT.</p><p class="a">Workflows es orquestación imperativa y general. DLT es declarativo para pipelines de tablas, con expectations de calidad y gestión automática de checkpoints y dependencias.</p></div>
+<div class="qa"><p class="q">29. ¿Cómo haces CI/CD en Databricks?</p><p class="a">Código en Git con Databricks Repos, jobs y pipelines definidos como código con Asset Bundles, y despliegue por entornos (dev, staging, prod) separados en catálogos de Unity Catalog.</p></div>
+<div class="qa"><p class="q">30. Tu job pasó de 20 minutos a 4 horas. ¿Qué miras?</p><p class="a">Spark UI para ubicar el stage lento; distribución de tasks para detectar skew; número y tamaño de archivos; si los joins pueden ser broadcast; si hay spill a disco; si entró una UDF de Python. Escalar el cluster es el último recurso, no el primero.</p></div>
+</section>
+
+<!-- ============ 16 ============ -->
+<section id="trampas">
+<h2><span class="num">16</span>Trampas típicas</h2>
+
+<div class="trap"><span class="mk">1</span><p>Confundir el <strong>Spark job</strong> con el <strong>Databricks Job</strong>. Aclara a cuál se refieren; demuestra criterio.</p></div>
+<div class="trap"><span class="mk">2</span><p>Decir que <code>collect()</code> es inofensivo. Trae <strong>todos</strong> los datos al driver y lo tumba por falta de memoria. Usa <code>limit()</code> o <code>display()</code>.</p></div>
+<div class="trap"><span class="mk">3</span><p>Creer que Delta es un formato de archivo. <strong>Es Parquet más un transaction log.</strong> Los datos siguen siendo Parquet.</p></div>
+<div class="trap"><span class="mk">4</span><p>Decir que <code>VACUUM</code> es gratis. Borra el time travel de las versiones afectadas.</p></div>
+<div class="trap"><span class="mk">5</span><p>Pensar que particionar siempre ayuda. Particionar por una columna de alta cardinalidad (como un ID) crea millones de carpetas diminutas y empeora todo. Como regla, solo particiona tablas grandes y por columnas de baja cardinalidad.</p></div>
+<div class="trap"><span class="mk">6</span><p>Cachear todo "por si acaso". La caché come la memoria que las tasks necesitan.</p></div>
+<div class="trap"><span class="mk">7</span><p>Responder "agrando el cluster" ante un job lento. Primero arregla el plan; el hardware es el último paso.</p></div>
+<div class="trap"><span class="mk">8</span><p>Olvidar el auto-termination al hablar de costos. Es el error operativo más caro y más común.</p></div>
+<div class="trap"><span class="mk">9</span><p>No saber que el número de tasks lo determinan las <strong>particiones</strong>, no los workers.</p></div>
+<div class="trap"><span class="mk">10</span><p>Hablar de streaming sin mencionar el <strong>checkpoint</strong>. Es lo que da la garantía exactly-once.</p></div>
+</section>
+
+<!-- ============ 17 ============ -->
+<section id="cheatsheet">
+<h2><span class="num">17</span>Cheat sheet de código</h2>
+
+<h3>PySpark esencial</h3>
+<pre><code><span class="kw">from</span> pyspark.sql.functions <span class="kw">import</span> col, sum, count, broadcast, current_timestamp
+
+df = spark.read.table(<span class="str">"prod.silver.ventas"</span>)
+
+<span class="cmt"># Transformaciones encadenadas — nada se ejecuta todavía</span>
+res = (df
+  .filter(col(<span class="str">"pais"</span>) == <span class="str">"CO"</span>)
+  .withColumn(<span class="str">"ingesta"</span>, current_timestamp())
+  .groupBy(<span class="str">"mes"</span>)
+  .agg(sum(<span class="str">"total"</span>).alias(<span class="str">"ventas"</span>), count(<span class="str">"*"</span>).alias(<span class="str">"n"</span>)))
+
+res.explain(<span class="str">"formatted"</span>)   <span class="cmt"># ver el plan SIN ejecutar</span>
+res.display()                <span class="cmt"># acción: aquí sí corre</span>
+
+<span class="cmt"># Forzar broadcast de la tabla pequeña</span>
+grande.join(broadcast(pequena), <span class="str">"id"</span>, <span class="str">"left"</span>)
+
+<span class="cmt"># Escribir en Delta</span>
+(res.write.format(<span class="str">"delta"</span>)
+   .mode(<span class="str">"overwrite"</span>)
+   .option(<span class="str">"overwriteSchema"</span>, <span class="str">"true"</span>)
+   .saveAsTable(<span class="str">"prod.gold.ventas_mes"</span>))</code></pre>
+
+<h3>Diagnóstico</h3>
+<pre><code><span class="cmt">-- ¿Cuántos archivos y de qué tamaño?</span>
+<span class="kw">DESCRIBE DETAIL</span> prod.silver.ventas;
+
+<span class="cmt">-- ¿Qué se le ha hecho a esta tabla?</span>
+<span class="kw">DESCRIBE HISTORY</span> prod.silver.ventas;
+
+<span class="cmt">-- ¿De dónde salen estos datos? (Unity Catalog)</span>
+<span class="kw">DESCRIBE EXTENDED</span> prod.silver.ventas;
+
+<span class="cmt">-- Particiones actuales en memoria</span>
+<span class="cmt">-- df.rdd.getNumPartitions()</span></code></pre>
+
+<h3>Permisos</h3>
+<pre><code><span class="kw">GRANT USE CATALOG ON CATALOG</span> prod <span class="kw">TO</span> `analistas`;
+<span class="kw">GRANT USE SCHEMA ON SCHEMA</span> prod.ventas <span class="kw">TO</span> `analistas`;
+<span class="kw">GRANT SELECT ON TABLE</span> prod.ventas.pedidos <span class="kw">TO</span> `analistas`;
+<span class="kw">SHOW GRANTS ON TABLE</span> prod.ventas.pedidos;</code></pre>
+
+<h3>Frases que funcionan bien en la entrevista</h3>
+<ul>
+<li>"Mis datos nunca salen de mi cuenta cloud; el control plane solo tiene metadatos."</li>
+<li>"Cuento los shuffles del plan antes de tocar el tamaño del cluster."</li>
+<li>"Bronze es append-only para poder reprocesar sin volver a la fuente."</li>
+<li>"Uso job clusters en producción y all-purpose solo para desarrollo."</li>
+<li>"Prefiero liquid clustering a particionado más Z-Order en tablas nuevas."</li>
+<li>"El checkpoint es lo que me da exactly-once; sin él no hay garantía."</li>
+<li>"Reviso la distribución de duración de tasks antes de culpar al volumen de datos."</li>
+</ul>
+</section>
+
+<footer>
+<p>Guía de preparación para entrevista de Databricks · noviembre 2026. Los nombres de producto y los valores por defecto de Databricks cambian con frecuencia; confirma los detalles de versión contra la documentación oficial antes de citarlos como exactos.</p>
+</footer>
+
+</div>
+
+</body></html>
